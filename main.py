@@ -6,8 +6,8 @@ import sys
 def main():
 
     if len(sys.argv) <= 1:
-        from pppf.tools.display_help import display_help
-        display_help()
+        from pppf.tools.display_messages import display_help
+        display_help(sys.argv[1:])
 
     launch()
 
