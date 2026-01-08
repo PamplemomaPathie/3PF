@@ -1,35 +1,22 @@
 #!/usr/bin/python3
 
 from pppf.tools.display_messages import display_help, display_version
-from pppf.install_packet import install_packet
+from pppf.install_packet import install_packet, list_packets
 from pppf.remove_packet import remove_packet
+from pppf.const import arguments
 
-
-arguments = {
-    "help": {
-        "description": "Display this help message",
-        "function": display_help
-    },
-    "version": {
-        "description": "Show the version of the tool",
-        "function": display_version
-    },
-    "install": {
-        "description": "Install a packet",
-        "function": install_packet
-    },
-    "remove": {
-        "description": "Remove a packet",
-        "function": remove_packet
-    }
-}
-
+arguments.get("help")["function"] = display_help
+arguments.get("version")["function"] = display_version
+arguments.get("install")["function"] = install_packet
+arguments.get("remove")["function"] = remove_packet
+arguments.get("list")["function"] = list_packets
 
 def parse_args(args):
 
     for arg in args:
         if arg in arguments:
-            arguments[arg]["function"](args[1:])
+            if "function" in arguments[arg]:
+                arguments[arg]["function"](args[1:])
             return
         else:
             print(f"Unknown argument: {arg}")

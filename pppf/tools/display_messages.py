@@ -1,5 +1,7 @@
 #!/usr/bin/python3
 
+from pppf.const import arguments
+
 
 def display_version(args):
     version_text = "3PF Packet Filter Version 0.0.1"
@@ -9,16 +11,14 @@ def display_version(args):
 def display_help(args):
 
     help_text = """
-\t3PF Packet Filter
+3PF Packet Filter
 
-\tUsage:
-\t\t3pf <options>
+Usage:
+\t3pf <options>
 
-\tOptions:
-\t\thelp\t\tDisplay this help message
-\t\t version\t\tShow the version of the tool
-\t\t install\t\tInstall a packet
-\t\t remove\t\tRemove a packet
- """
+Options:
+"""
+    for arg_name, arg_info in arguments.items():
+        help_text += f"\t{arg_name}\t{arg_info.get('description', '')}\n"
 
     print(help_text)
