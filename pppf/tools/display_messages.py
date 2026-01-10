@@ -14,11 +14,11 @@ def display_help(args):
 3PF Packet Filter
 
 Usage:
-\t3pf <options>
+  3pf [command]
 
-Options:
+Available Commands:
 """
     for arg_name, arg_info in arguments.items():
-        help_text += f"\t{arg_name}\t{arg_info.get('description', '')}\n"
+        help_text += f"  {arg_name}{' ' * (7 - len(arg_name))}\t{arg_info.get('description', '')}\n"
 
     print(help_text)
