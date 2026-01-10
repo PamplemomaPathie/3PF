@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 
+BASEDIR = "~/.3pf/"
+
 arguments = {
     "help": {
         "description": "Display this help message"
