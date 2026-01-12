@@ -16,6 +16,9 @@ arguments = {
     "remove": {
         "description": "Remove a packet"
     },
+    "deploy": {
+        "description": "Deploy a lib"
+    },
     "list": {
         "description": "List all available packets"
     }
