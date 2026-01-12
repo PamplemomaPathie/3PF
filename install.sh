@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-readonly BASEDIR=~/.3pf
+readonly BASEDIR=./.3pf/
 
 
 
