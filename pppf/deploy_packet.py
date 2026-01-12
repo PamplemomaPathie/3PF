@@ -21,8 +21,16 @@ def print_usage():
     print('  3pf deploy "myOwnLib"\n  --descf ./desc.txt\n  --test ./tests/test_lib.c\n  --link "myFirstLib" 1\n  --header ./include/header_lib.h\n  ./srcs/filelib.c ./srcs/other_file.c')
 
 
+
 def flag_desf(lib, args, i):
-    pass
+    try:
+        with open(args[i + 1], "r") as file:
+            content = file.read()
+    except FileNotFoundError:
+        print(f"Error: You must provide a valid file after '--desf' flag.")
+        return False
+    lib["desc"] = content
+    return True
 
 def flag_desc(lib, args, i):
     if args[i + 1] == "":
