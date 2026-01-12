@@ -21,53 +21,73 @@ def print_usage():
     print('  3pf deploy "myOwnLib"\n  --descf ./desc.txt\n  --test ./tests/test_lib.c\n  --link "myFirstLib" 1\n  --header ./include/header_lib.h\n  ./srcs/filelib.c ./srcs/other_file.c')
 
 
-def flag_desf(args, i):
+def flag_desf(lib, args, i):
     pass
 
-def flag_desc(args, i):
+def flag_desc(lib, args, i):
+    if args[i + 1] == "":
+        print("Please provide a valid description.")
+        return False
+    lib["desc"] = args[i + 1]
+    return True
+
+def flag_test(lib, args, i):
     pass
 
-def flag_test(args, i):
+def flag_link(lib, args, i):
     pass
 
-def flag_link(args, i):
-    pass
-
-def flag_header(args, i):
+def flag_header(lib, args, i):
     pass
 
 
-def parse_arguments(args):
-
-    flags = {
-        "--desf": {
-            "required": 1,
-            "function": flag_desf
-        },
-        "--desc": {
-            "required": 1,
-            "function": flag_desc
-        },
-        "--test": {
-            "required": 1,
-            "function": flag_test
-        },
-        "--link": {
-            "required": 2,
-            "function": flag_link
-        },
-        "--header": {
-            "required": 1,
-            "function": flag_header
-        }
+flags = {
+    "--desf": {
+        "required": 1,
+        "function": flag_desf
+    },
+    "--desc": {
+        "required": 1,
+        "function": flag_desc
+    },
+    "--test": {
+        "required": 1,
+        "function": flag_test
+    },
+    "--link": {
+        "required": 2,
+        "function": flag_link
+    },
+    "--header": {
+        "required": 1,
+        "function": flag_header
     }
+}
+
+def parse_arguments(args, lib):
+    current_param = 0
 
     for i in range(len(args)):
+        if current_param > 0:
+            current_param -= 1
+            continue
+
         if args[i] in flags:
             current = flags[args[i]]
+
             if current.get("required", 0) + i + 1 > len(args):
                 print(f"Error: {args[i]} requires {current.get("required", 0)} parameters.")
                 sys.exit(1)
+
+            func = current.get("function", None)
+            if func != None:
+                if func(lib, args, i) == False:
+                    sys.exit(2)
+                current_param = current.get("required", 0)
+
+        elif args[i].startswith("--"):
+            print(f"Error: {args[i]} unknown flag in 'deploy' command.")
+            sys.exit(1)
 
 
 def deploy_packet(args):
@@ -76,6 +96,15 @@ def deploy_packet(args):
         print_usage()
         sys.exit(0)
 
-    parse_arguments(args)
-    print(args)
+    lib = {
+        "name": None,
+        "desc": None,
+        "unit-tests": [],
+        "link": [],
+        "header": None,
+        "sources": []
+    }
+
+    parse_arguments(args, lib)
+    print(lib)
 
