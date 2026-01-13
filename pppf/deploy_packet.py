@@ -86,7 +86,8 @@ flags = {
 def parse_arguments(args, lib):
     current_param = 0
 
-    for i in range(len(args)):
+    lib["name"] = args[0]
+    for i in range(1, len(args)):
         if current_param > 0:
             current_param -= 1
             continue
@@ -107,7 +108,6 @@ def parse_arguments(args, lib):
         elif args[i].startswith("--"):
             print(f"Error: {args[i]} unknown flag in 'deploy' command.")
             sys.exit(1)
-
 
 
 def deploy_packet(args):
