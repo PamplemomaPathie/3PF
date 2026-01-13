@@ -55,7 +55,9 @@ def flag_link(lib, args, i):
     pass
 
 def flag_header(lib, args, i):
-    pass
+    if read_flag_file(args[i + 1], "--test") == None:
+        return False
+    lib["link"].append(args[i + 1])
 
 
 flags = {
