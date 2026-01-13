@@ -31,33 +31,33 @@ def read_flag_file(filename: str, flag: str):
     return content
 
 
-def flag_desf(lib, args, i):
+def flag_desf(lib, args, i) -> bool:
     content = read_flag_file(args[i + 1], "--desf")
     if content == None:
         return False
     lib["desc"] = content
     return True
 
-def flag_desc(lib, args, i):
+def flag_desc(lib, args, i) -> bool:
     if args[i + 1] == "":
         print("Please provide a valid description.")
         return False
     lib["desc"] = args[i + 1]
     return True
 
-def flag_test(lib, args, i):
+def flag_test(lib, args, i) -> bool:
     if read_flag_file(args[i + 1], "--test") == None:
         return False
     lib["unit-tests"].append(args[i + 1])
     return True
 
-def flag_link(lib, args, i):
+def flag_link(lib, args, i) -> bool:
     pass
 
-def flag_header(lib, args, i):
-    if read_flag_file(args[i + 1], "--test") == None:
+def flag_header(lib, args, i) -> bool:
+    if read_flag_file(args[i + 1], "--header") == None:
         return False
-    lib["link"].append(args[i + 1])
+    lib["header"] = args[i + 1]
 
 
 flags = {
