@@ -21,13 +21,19 @@ def print_usage():
     print('  3pf deploy "myOwnLib"\n  --descf ./desc.txt\n  --test ./tests/test_lib.c\n  --link "myFirstLib" 1\n  --header ./include/header_lib.h\n  ./srcs/filelib.c ./srcs/other_file.c')
 
 
-
-def flag_desf(lib, args, i):
+def read_flag_file(filename: str, flag: str):
     try:
-        with open(args[i + 1], "r") as file:
+        with open(filename, "r") as file:
             content = file.read()
     except FileNotFoundError:
-        print(f"Error: You must provide a valid file after '--desf' flag.")
+        print(f"Error: '{filename}' is not a valid file for '{flag}' flag.")
+        return None
+    return content
+
+
+def flag_desf(lib, args, i):
+    content = read_flag_file(args[i + 1], "--desf")
+    if content == None:
         return False
     lib["desc"] = content
     return True
@@ -40,7 +46,10 @@ def flag_desc(lib, args, i):
     return True
 
 def flag_test(lib, args, i):
-    pass
+    if read_flag_file(args[i + 1], "--test") == None:
+        return False
+    lib["unit-tests"].append(args[i + 1])
+    return True
 
 def flag_link(lib, args, i):
     pass
@@ -84,7 +93,7 @@ def parse_arguments(args, lib):
             current = flags[args[i]]
 
             if current.get("required", 0) + i + 1 > len(args):
-                print(f"Error: {args[i]} requires {current.get("required", 0)} parameters.")
+                print(f"Error: '{args[i][2:]}' flag requires {current.get("required", 0)} parameters.")
                 sys.exit(1)
 
             func = current.get("function", None)
@@ -96,6 +105,7 @@ def parse_arguments(args, lib):
         elif args[i].startswith("--"):
             print(f"Error: {args[i]} unknown flag in 'deploy' command.")
             sys.exit(1)
+
 
 
 def deploy_packet(args):
