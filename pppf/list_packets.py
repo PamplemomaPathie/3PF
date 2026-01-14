@@ -7,24 +7,28 @@ import sys
 
 
 def print_usage():
-    print("Usage: 3pf list [options]\n\n")
+    print("Usage: 3pf list [options] [libs]\n\n")
     print("List all installed packages.")
+    print("You can also list more data about specific libraries by naming them.")
     print("\nOptions:")
     print("  --help\t\tHelp for list command.")
     print("  --detail\t\tDisplay more detail on the libraries.")
     print("  --version <number>\tList all specific versions.")
-    print("  --lib <lib-name>\tGet information about a specific library.")
-
 
 
 def flag_detail(lib, args, i) -> bool:
     lib["detail"] = True
 
 def flag_version(lib, args, i) -> bool:
-    pass
+    try:
+        version = int(args[i + 1])
+        lib["version"] = version
+    except Exception as e:
+        print(f"Error: '{args[i + 1]}' is not a valid number for flag version.")
+        return False
 
 def flag_lib(lib, args, i) -> bool:
-    pass
+    lib["lib"].append(args[i + 1])
 
 flags = {
     "--detail": {
@@ -34,10 +38,6 @@ flags = {
     "--version": {
         "required": 1,
         "function": flag_version
-    },
-    "--lib": {
-        "required": 1,
-        "function": flag_lib
     }
 }
 
@@ -62,13 +62,16 @@ def parse_arguments(args, libs):
                     sys.exit(2)
                 current_param = current.get("required", 0)
 
-        else:
+        elif args[i].startswith("--"):
             print(f"Error: '{args[i]}' unknown option in 'list' command.")
             sys.exit(1)
 
+        else:
+            libs["lib"].append(args[i])
+
 
 def list_packets(args):
-    if len(args) >= 1 and (args[0] == "help" or args[0] == "--help"):
+    if len(args) >= 1 and ("help"in args or "--help" in args):
         print_usage()
         sys.exit(0)
 
