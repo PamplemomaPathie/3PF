@@ -7,29 +7,44 @@ import sys
 
 
 def print_usage():
-    print("Usage: 3pf list [options]\n") # Need to explain what does the command do
-    print("\nOptions:\n")
-    print("  --detail\t\t\tDisplay more detail on the libraries.\n")
-    print("  --version <number>\t\tList all specific versions.")
-    print("  --lib <lib-name>\t\tGet information about a specific library.\n")
+    print("Usage: 3pf list [options]\n\n")
+    print("List all installed packages.")
+    print("\nOptions:")
+    print("  --help\t\tHelp for list command.")
+    print("  --detail\t\tDisplay more detail on the libraries.")
+    print("  --version <number>\tList all specific versions.")
+    print("  --lib <lib-name>\tGet information about a specific library.")
 
 
+
+def flag_detail(lib, args, i) -> bool:
+    lib["detail"] = True
 
 def flag_version(lib, args, i) -> bool:
     pass
 
+def flag_lib(lib, args, i) -> bool:
+    pass
 
 flags = {
+    "--detail": {
+        "required": 0,
+        "function": flag_detail
+    },
     "--version": {
         "required": 1,
         "function": flag_version
+    },
+    "--lib": {
+        "required": 1,
+        "function": flag_lib
     }
 }
 
 def parse_arguments(args, libs):
     current_param = 0
 
-    for i in range(1, len(args)):
+    for i in range(len(args)):
         if current_param > 0:
             current_param -= 1
             continue
@@ -47,17 +62,21 @@ def parse_arguments(args, libs):
                     sys.exit(2)
                 current_param = current.get("required", 0)
 
-        elif args[i].startswith("--"):
-            print(f"Error: {args[i]} unknown flag in 'deploy' command.")
+        else:
+            print(f"Error: '{args[i]}' unknown option in 'list' command.")
             sys.exit(1)
 
 
 def list_packets(args):
-    if len(args) >= 1 and args[0] == "help":
+    if len(args) >= 1 and (args[0] == "help" or args[0] == "--help"):
         print_usage()
         sys.exit(0)
 
-    libs = []
+    libs = {
+        "detail": False,
+        "version": 0, # 0 For all versions
+        "lib": []
+    }
 
     parse_arguments(args, libs)
     print(libs)
