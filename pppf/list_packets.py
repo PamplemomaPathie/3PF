@@ -70,6 +70,22 @@ def parse_arguments(args, libs):
             libs["lib"].append(args[i])
 
 
+def list_libs(libs):
+    basedir = "./.3pf/libs/"
+    lib_dir = os.listdir(basedir)
+
+    lib_list = {}
+    for lib in lib_dir:
+        if not os.path.isdir(basedir + lib):
+            print(f"Warning: Bad Configuration for '{lib}' library.")
+            continue
+        content = os.listdir(basedir + lib)
+        lib_list[lib] = content
+        if "content.txt" not in content:
+            print(f"Warning: Bad Configuration for '{lib}' library.")
+    print(lib_list)
+
+
 def list_packets(args):
     if len(args) >= 1 and ("help"in args or "--help" in args):
         print_usage()
@@ -83,3 +99,10 @@ def list_packets(args):
 
     parse_arguments(args, libs)
     print(libs)
+    try:
+        list_libs(libs)
+    except Exception as e:
+        print("Wrong configuration of 3PF, please consider reinstalling the client.")
+        print(f"Error detail: {e}")
+        sys.exit(2)
+
