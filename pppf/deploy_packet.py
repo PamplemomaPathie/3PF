@@ -10,6 +10,7 @@ def print_usage():
     print("Usage: 3pf deploy <Title> [options] <srcs> ...\n")
     print("\nYou must list the sources files at the end of the command")
     print("\nOptions:\n")
+    print("  --help\t\t\tHelp for deploy command.\n")
     print("  --desf <desc.txt>\t\tSet the library description from a file content.")
     print("  --desc \"your desc\"\t\tSet directly the library description.\n")
     print("  --test <file.c>\t\tSet a unit test file.")
@@ -112,7 +113,7 @@ def parse_arguments(args, lib):
 
 def deploy_packet(args):
 
-    if len(args) <= 1 or args[0] == "help":
+    if len(args) <= 1 or args[0] == "help" or args[0] == "--help":
         print_usage()
         sys.exit(0)
 
