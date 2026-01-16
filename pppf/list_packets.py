@@ -7,10 +7,10 @@ import sys
 
 
 def print_usage():
-    print("Usage: 3pf list [options] [packets]\n\n")
+    print("Usage: 3pf list [flags] [packets]\n\n")
     print("List all installed packets.")
     print("You can also display more info about specific packets by naming them.")
-    print("\nOptions:")
+    print("\nFlags:")
     print("  --help\t\tDisplay help for list command.")
     print("  --detail\t\tDisplay packet details.")
     print("  --version <number>\tDisplay a specific version of a packet.")

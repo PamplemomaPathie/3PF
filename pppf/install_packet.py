@@ -6,9 +6,9 @@ import sys
 
 
 def print_usage():
-    print("Usage: 3pf install <title> [options]\n")
+    print("Usage: 3pf install <title> [flags]\n")
     print("\nInstall any packet.")
-    print("\nOptions:")
+    print("\nFlags:")
     print("  --help\t\tHelp for install command.")
     print("  --tests\t\tInstall packet with its unit test files.")
     print("  --version <version>\tInstall a specific version of a packet.")

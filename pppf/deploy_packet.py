@@ -7,10 +7,10 @@ from pppf.const import BASEDIR
 
 
 def print_usage():
-    print("Usage: 3pf deploy <title> [options] <srcs> ...\n")
+    print("Usage: 3pf deploy <title> [flags] <srcs> ...\n")
     print("\nDeploy a packet in your 3PF libs.")
     print("The source files should be listed at the end of the command.")
-    print("\nOptions:")
+    print("\nFlags:")
     print("  --help\t\t\tDisplay help for the deploy command.")
     print("  --desc \"your desc\"\t\tSet packet description.")
     print("  --desf <desc.txt>\t\tSet packet description (from a text file).")
