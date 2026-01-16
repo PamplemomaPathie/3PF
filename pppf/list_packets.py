@@ -2,9 +2,9 @@
 
 from pppf.tools.tools import list_dir
 from pppf.const import BASEDIR
+from pppf.tools.json_tools import save_to_json, load_from_json
 import os
 import sys
-
 
 def print_usage():
     print("Usage: 3pf list [flags] [packets]\n\n")
@@ -70,7 +70,7 @@ def parse_arguments(args, libs):
             libs["lib"].append(args[i])
 
 
-def list_libs(libs):
+def list_libs(options):
     basedir = "./.3pf/libs/"
     lib_dir = os.listdir(basedir)
 
@@ -83,7 +83,7 @@ def list_libs(libs):
         lib_list[lib] = content
         if "content.txt" not in content:
             print(f"Warning: Bad Configuration for '{lib}' library.")
-    print(lib_list)
+    libs = {}
     for lib in lib_list:
         current_lib = {
             "content": None,
@@ -98,7 +98,8 @@ def list_libs(libs):
                 versions["tests"] = "tests" in content
                 versions["headers"] = "headers" in content
                 current_lib["versions"][element] = versions
-        print(current_lib)
+        libs[lib] = current_lib
+    print(libs)
 
 
 def list_packets(args):
