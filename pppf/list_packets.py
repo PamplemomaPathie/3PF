@@ -84,6 +84,21 @@ def list_libs(libs):
         if "content.txt" not in content:
             print(f"Warning: Bad Configuration for '{lib}' library.")
     print(lib_list)
+    for lib in lib_list:
+        current_lib = {
+            "content": None,
+            "desc": None,
+            "versions": {}
+        }
+        for element in lib_list[lib]:
+            current_path = basedir + lib + "/" + element
+            if os.path.isdir(current_path):
+                content = os.listdir(current_path)
+                versions = {}
+                versions["tests"] = "tests" in content
+                versions["headers"] = "headers" in content
+                current_lib["versions"][element] = versions
+        print(current_lib)
 
 
 def list_packets(args):
