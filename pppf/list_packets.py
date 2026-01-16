@@ -7,13 +7,13 @@ import sys
 
 
 def print_usage():
-    print("Usage: 3pf list [options] [libs]\n\n")
-    print("List all installed packages.")
-    print("You can also list more data about specific libraries by naming them.")
+    print("Usage: 3pf list [options] [packets]\n\n")
+    print("List all installed packets.")
+    print("You can also display more info about specific packets by naming them.")
     print("\nOptions:")
-    print("  --help\t\tHelp for list command.")
-    print("  --detail\t\tDisplay more detail on the libraries.")
-    print("  --version <number>\tList all specific versions.")
+    print("  --help\t\tDisplay help for list command.")
+    print("  --detail\t\tDisplay packet details.")
+    print("  --version <number>\tDisplay a specific version of a packet.")
 
 
 def flag_detail(lib, args, i) -> bool:
@@ -53,7 +53,7 @@ def parse_arguments(args, libs):
             current = flags[args[i]]
 
             if current.get("required", 0) + i + 1 > len(args):
-                print(f"Error: '{args[i][2:]}' flag requires {current.get("required", 0)} parameters.")
+                print(f"Error: '{args[i][2:]}' flag requires {current.get('required', 0)} parameters.")
                 sys.exit(1)
 
             func = current.get("function", None)
