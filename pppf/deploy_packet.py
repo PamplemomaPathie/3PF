@@ -7,18 +7,18 @@ from pppf.const import BASEDIR
 
 
 def print_usage():
-    print("Usage: 3pf deploy <Title> [options] <srcs> ...\n")
-    print("\nDeploy any packet.")
-    print("You must list the sources files at the end of the command")
+    print("Usage: 3pf deploy <title> [options] <srcs> ...\n")
+    print("\nDeploy a packet in your 3PF libs.")
+    print("The source files should be listed at the end of the command.")
     print("\nOptions:")
-    print("  --help\t\t\tHelp for deploy command.")
-    print("  --desf <desc.txt>\t\tSet the library description from a file content.")
-    print("  --desc \"your desc\"\t\tSet directly the library description.")
-    print("  --test <file.c>\t\tSet a unit test file.")
-    print("\t\t\t\t(Flag can be called multiple times for multiple files)")
-    print("  --link <lib-name> <version>\tLink a dependency to another lib.")
-    print("\t\t\t\t(Flag can be called multiple times for multiple files)")
-    print("  --header <file.h>\tLink a header to a lib.\n")
+    print("  --help\t\t\tDisplay help for the deploy command.")
+    print("  --desc \"your desc\"\t\tSet packet description.")
+    print("  --desf <desc.txt>\t\tSet packet description (from a text file).")
+    print("  --test <file.c>\t\tLink a unit tests file to your packet.")
+    print("\t\t\t\t(this flag applies to the preceding packet only, and can be used multiple times in one command)")
+    print("  --link <lib-name> <version>\tCreate a dependency between your packet and another.")
+    print("\t\t\t\t(this flag applies to the preceding packet only, and can be used multiple times in one command)")
+    print("  --header <file.h>\t\tLink a header to your packet.\n")
     print("Example:")
     print('  3pf deploy "myOwnLib"\n  --descf ./desc.txt\n  --test ./tests/test_lib.c\n  --link "myFirstLib" 1\n  --header ./include/header_lib.h\n  ./srcs/filelib.c ./srcs/other_file.c')
 
@@ -33,18 +33,18 @@ def read_flag_file(filename: str, flag: str):
     return content
 
 
-def flag_desf(lib, args, i) -> bool:
-    content = read_flag_file(args[i + 1], "--desf")
-    if content == None:
-        return False
-    lib["desc"] = content
-    return True
-
 def flag_desc(lib, args, i) -> bool:
     if args[i + 1] == "":
         print("Please provide a valid description.")
         return False
     lib["desc"] = args[i + 1]
+    return True
+
+def flag_desf(lib, args, i) -> bool:
+    content = read_flag_file(args[i + 1], "--desf")
+    if content == None:
+        return False
+    lib["desc"] = content
     return True
 
 def flag_test(lib, args, i) -> bool:
@@ -63,13 +63,13 @@ def flag_header(lib, args, i) -> bool:
 
 
 flags = {
-    "--desf": {
-        "required": 1,
-        "function": flag_desf
-    },
     "--desc": {
         "required": 1,
         "function": flag_desc
+    },
+    "--desf": {
+        "required": 1,
+        "function": flag_desf
     },
     "--test": {
         "required": 1,
@@ -98,7 +98,7 @@ def parse_arguments(args, lib):
             current = flags[args[i]]
 
             if current.get("required", 0) + i + 1 > len(args):
-                print(f"Error: '{args[i][2:]}' flag requires {current.get("required", 0)} parameters.")
+                print(f"Error: '{args[i][2:]}' flag requires {current.get('required', 0)} parameters.")
                 sys.exit(1)
 
             func = current.get("function", None)
