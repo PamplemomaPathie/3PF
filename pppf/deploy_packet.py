@@ -7,8 +7,8 @@ from pppf.const import BASEDIR
 
 
 def print_usage():
-    print("Usage: 3pf deploy <title> [flags] <srcs> ...\n")
-    print("\nDeploy a packet in your 3PF libs.")
+    print("Usage: 3pf deploy <packet-name> [flags] <srcs> ...\n")
+    print("\nDeploy a <packet-name> packet in your 3PF libs.")
     print("The source files should be listed at the end of the command.")
     print("\nFlags:")
     print("  --help\t\t\tDisplay help for the deploy command.")
