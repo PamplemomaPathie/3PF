@@ -108,23 +108,16 @@ def reload_libs(options):
             "versions": {}
         }
         lib_dir = LIBDIR + lib + "/"
-        print("libs: ", libs)
         for version in lib_list[lib]:
             current_path = lib_dir + version
             if not os.path.isdir(current_path):
                 continue # Possibly get the changelog detection here
             content = os.listdir(current_path)
-            print("libs: ", libs)
             current_lib["versions"][version] = {}
             current_lib["versions"][version]["changelog"] = ""
             current_lib["versions"][version]["tests"] = get_lib_tests(current_path + "/", content)
             current_lib["versions"][version]["headers"] = "headers" in content
-            print(current_lib["versions"][version])
-        print("====", lib)
-        print(libs)
         libs[lib] = current_lib
-        print(libs)
-        print("====")
     print(libs)
     save_to_json(libs, BASEDIR + "libs.json")
 
