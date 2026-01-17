@@ -95,12 +95,16 @@ def get_lib_tests(path, path_content):
         return []
     full_path = path + "tests/"
     tests = os.listdir(full_path)
-    prototypes = []
-    for test in tests:
-        current_prototypes = get_cleaned_function_prototypes(full_path + test)
-        for i in range(len(current_prototypes)):
-            current_prototypes[i] = current_prototypes[i].split("(")[1].split(",")[0]
-        prototypes.append(current_prototypes)
+    try:
+        prototypes = []
+        for test in tests:
+            current_prototypes = get_cleaned_function_prototypes(full_path + test)
+            for i in range(len(current_prototypes)):
+                current_prototypes[i] = current_prototypes[i].split("(")[1].split(",")[0]
+            prototypes.append(current_prototypes)
+    except Exception as e:
+        return tests
+
     return prototypes
 
 
