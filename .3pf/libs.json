@@ -5,7 +5,9 @@
     "versions": {
       "1": {
         "changelog": "",
-        "tests": true,
+        "tests": [
+          "lib_test.c"
+        ],
         "headers": false
       }
     }
@@ -16,7 +18,9 @@
     "versions": {
       "1": {
         "changelog": "",
-        "tests": true,
+        "tests": [
+          "my_stringlib_tests.c"
+        ],
         "headers": false
       }
     }
