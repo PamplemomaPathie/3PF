@@ -3,7 +3,7 @@
 from pppf.tools.tools import list_dir
 from pppf.const import BASEDIR, LIBDIR
 from pppf.tools.json_tools import save_to_json, load_from_json
-from pppf.tools.prototype_parser import get_function_prototypes
+from pppf.tools.prototype_parser import get_cleaned_function_prototypes
 import os
 import sys
 
@@ -92,9 +92,23 @@ def get_libs_inside_content(lib_original_dir: str):
 
 def get_lib_tests(path, path_content):
     if "tests" not in path_content:
-        return 0
-    tests = os.listdir(path + "tests/")
-    return tests
+        return []
+    full_path = path + "tests/"
+    tests = os.listdir(full_path)
+    prototypes = []
+    for test in tests:
+        current_prototypes = get_cleaned_function_prototypes(full_path + test)
+        for i in range(len(current_prototypes)):
+            current_prototypes[i] = current_prototypes[i].split("(")[1].split(",")[0]
+        prototypes.append(current_prototypes)
+    return prototypes
+
+
+def get_lib_headers(path, path_content):
+    if "headers" not in path_content:
+        return []
+    headers = os.listdir(path + "headers/")
+    return headers
 
 
 def reload_libs(options):
@@ -116,7 +130,7 @@ def reload_libs(options):
             current_lib["versions"][version] = {}
             current_lib["versions"][version]["changelog"] = ""
             current_lib["versions"][version]["tests"] = get_lib_tests(current_path + "/", content)
-            current_lib["versions"][version]["headers"] = "headers" in content
+            current_lib["versions"][version]["headers"] = get_lib_headers(current_path + "/", content)
         libs[lib] = current_lib
     print(libs)
     save_to_json(libs, BASEDIR + "libs.json")
