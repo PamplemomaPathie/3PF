@@ -3,6 +3,7 @@
 from pppf.tools.tools import list_dir
 from pppf.const import BASEDIR, LIBDIR
 from pppf.tools.json_tools import save_to_json, load_from_json
+from pppf.tools.prototype_parser import get_function_prototypes
 import os
 import sys
 
@@ -89,29 +90,42 @@ def get_libs_inside_content(lib_original_dir: str):
     return lib_list
 
 
+def get_lib_tests(path, path_content):
+    if "tests" not in path_content:
+        return 0
+    tests = os.listdir(path + "tests/")
+    return tests
+
+
 def reload_libs(options):
     lib_list = get_libs_inside_content(LIBDIR)
 
     libs = {}
-    default_lib = {
-        "content": None,
-        "desc": None,
-        "versions": {}
-    }
     for lib in lib_list:
-        current_lib = default_lib
+        current_lib = {
+            "content": None,
+            "desc": None,
+            "versions": {}
+        }
         lib_dir = LIBDIR + lib + "/"
-        for element in lib_list[lib]:
-            current_path = lib_dir + element
+        print("libs: ", libs)
+        for version in lib_list[lib]:
+            current_path = lib_dir + version
             if not os.path.isdir(current_path):
                 continue # Possibly get the changelog detection here
             content = os.listdir(current_path)
-            versions = {}
-            versions["changelog"] = ""
-            versions["tests"] = "tests" in content
-            versions["headers"] = "headers" in content
-            current_lib["versions"][element] = versions
+            print("libs: ", libs)
+            current_lib["versions"][version] = {}
+            current_lib["versions"][version]["changelog"] = ""
+            current_lib["versions"][version]["tests"] = get_lib_tests(current_path + "/", content)
+            current_lib["versions"][version]["headers"] = "headers" in content
+            print(current_lib["versions"][version])
+        print("====", lib)
+        print(libs)
         libs[lib] = current_lib
+        print(libs)
+        print("====")
+    print(libs)
     save_to_json(libs, BASEDIR + "libs.json")
 
 
