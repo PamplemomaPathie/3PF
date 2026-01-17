@@ -11,7 +11,8 @@ def read_file(filename: str):
         sys.exit(1)
     return content
 
-def get_function_prototypes(content: str):
+def get_function_prototypes(filename: str):
+    content = read_file(filename)
     result = content.split("\n}") # end of a function body
 
     for i in range(len(result)):
@@ -31,9 +32,40 @@ def get_function_prototypes(content: str):
     result = [res for res in result if res[-1:] == ';'] # filtering prototypes to remove those without semicolon (since it means they're a static function)
     return result
 
+
+def clean_prototype(prototype: str):
+    parts = prototype.split("\n")
+    in_prototype = False
+    cleaned_prototype = []
+
+    for line in parts:
+        content = line.strip()
+
+        if in_prototype:
+            if content.startswith("//") or content.startswith("/*"):
+                break
+            cleaned_prototype.append(line)
+            if content.endswith(')'):
+                in_prototype = False
+        elif content and not content.startswith("//") and not content.startswith("/*"):
+            if '(' in content:
+                cleaned_prototype.append(line)
+                in_prototype = True
+
+    return "\n".join(cleaned_prototype) if cleaned_prototype else None
+
+def get_cleaned_function_prototypes(filename: str):
+    prototypes = get_function_prototypes(filename)
+
+    for i in range(len(prototypes)):
+        prototypes[i] = clean_prototype(prototypes[i])
+
+    return prototypes
+
+
 def main():
     file = sys.argv[1]
-    prototypes = get_function_prototypes(read_file(file))
+    prototypes = get_cleaned_function_prototypes(file)
     for func in prototypes:
         print(func)
         print("====")
