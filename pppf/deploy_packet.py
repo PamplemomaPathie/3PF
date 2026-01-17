@@ -88,8 +88,7 @@ flags = {
 def parse_arguments(args, lib):
     current_param = 0
 
-    lib["name"] = args[0]
-    for i in range(1, len(args)):
+    for i in range(len(args)):
         if current_param > 0:
             current_param -= 1
             continue
@@ -119,7 +118,7 @@ def deploy_packet(args):
         sys.exit(0)
 
     lib = {
-        "name": None,
+        "name": args[0],
         "desc": None,
         "unit-tests": [],
         "link": [],
@@ -127,6 +126,7 @@ def deploy_packet(args):
         "sources": []
     }
 
+    args.pop(0)
     parse_arguments(args, lib)
     print(lib)
 
