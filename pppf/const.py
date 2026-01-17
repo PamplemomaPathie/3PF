@@ -1,7 +1,8 @@
 #!/usr/bin/python3
 
 
-BASEDIR = "~/.3pf/"
+BASEDIR = "./.3pf/"
+LIBDIR = "./.3pf/libs/"
 
 arguments = {
     "help": {

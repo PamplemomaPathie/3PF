@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from pppf.tools.tools import list_dir
-from pppf.const import BASEDIR
+from pppf.const import BASEDIR, LIBDIR
 from pppf.tools.json_tools import save_to_json, load_from_json
 import os
 import sys
@@ -70,36 +70,49 @@ def parse_arguments(args, libs):
             libs["lib"].append(args[i])
 
 
-def list_libs(options):
-    basedir = "./.3pf/libs/"
-    lib_dir = os.listdir(basedir)
+"""
+Return the inside content of a libraries directory.
+"""
+def get_libs_inside_content(lib_original_dir: str):
+    lib_dir_content = os.listdir(lib_original_dir)
 
     lib_list = {}
-    for lib in lib_dir:
-        if not os.path.isdir(basedir + lib):
-            print(f"Warning: Bad Configuration for '{lib}' library.")
+    for lib in lib_dir_content:
+        lib_dir = lib_original_dir + lib
+        if not os.path.isdir(lib_dir):
+            print(f"Warning: Can't open '{lib}' folder.")
             continue
-        content = os.listdir(basedir + lib)
+        content = os.listdir(lib_dir)
         lib_list[lib] = content
         if "content.txt" not in content:
-            print(f"Warning: Bad Configuration for '{lib}' library.")
+            print(f"Warning: Missing configuration files in '{lib}' library.")
+    return lib_list
+
+
+def reload_libs(options):
+    lib_list = get_libs_inside_content(LIBDIR)
+
     libs = {}
+    default_lib = {
+        "content": None,
+        "desc": None,
+        "versions": {}
+    }
     for lib in lib_list:
-        current_lib = {
-            "content": None,
-            "desc": None,
-            "versions": {}
-        }
+        current_lib = default_lib
+        lib_dir = LIBDIR + lib + "/"
         for element in lib_list[lib]:
-            current_path = basedir + lib + "/" + element
-            if os.path.isdir(current_path):
-                content = os.listdir(current_path)
-                versions = {}
-                versions["tests"] = "tests" in content
-                versions["headers"] = "headers" in content
-                current_lib["versions"][element] = versions
+            current_path = lib_dir + element
+            if not os.path.isdir(current_path):
+                continue # Possibly get the changelog detection here
+            content = os.listdir(current_path)
+            versions = {}
+            versions["changelog"] = ""
+            versions["tests"] = "tests" in content
+            versions["headers"] = "headers" in content
+            current_lib["versions"][element] = versions
         libs[lib] = current_lib
-    print(libs)
+    save_to_json(libs, BASEDIR + "libs.json")
 
 
 def list_packets(args):
@@ -116,7 +129,7 @@ def list_packets(args):
     parse_arguments(args, libs)
     print(libs)
     try:
-        list_libs(libs)
+        reload_libs(libs)
     except Exception as e:
         print("Wrong configuration of 3PF, please consider reinstalling the client.")
         print(f"Error detail: {e}")

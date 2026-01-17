@@ -1,0 +1,24 @@
+{
+  "libc": {
+    "content": null,
+    "desc": null,
+    "versions": {
+      "1": {
+        "changelog": "",
+        "tests": true,
+        "headers": false
+      }
+    }
+  },
+  "cstring": {
+    "content": null,
+    "desc": null,
+    "versions": {
+      "1": {
+        "changelog": "",
+        "tests": true,
+        "headers": false
+      }
+    }
+  }
+}
