@@ -85,8 +85,6 @@ def get_libs_inside_content(lib_original_dir: str):
             continue
         content = os.listdir(lib_dir)
         lib_list[lib] = content
-        if "content.txt" not in content:
-            print(f"Warning: Missing configuration files in '{lib}' library.")
     return lib_list
 
 
@@ -115,16 +113,27 @@ def get_lib_headers(path, path_content):
     return headers
 
 
+def get_lib_info(lib, content):
+    default_lib = {
+        "content": None,
+        "desc": None,
+        "versions": {}
+    }
+    print(lib, content)
+    if "content.txt" not in content:
+        print(f"Warning: Missing 'content.txt' file in '{lib}' library.")
+    if "desc.txt" not in content:
+        print(f"Warning: Missing 'desc.txt' file in '{lib}' library.")
+    default_lib["content"] = None
+    return default_lib
+
+
 def reload_libs(options):
     lib_list = get_libs_inside_content(LIBDIR)
 
     libs = {}
     for lib in lib_list:
-        current_lib = {
-            "content": None,
-            "desc": None,
-            "versions": {}
-        }
+        current_lib = get_lib_info(lib, lib_list[lib])
         lib_dir = LIBDIR + lib + "/"
         for version in lib_list[lib]:
             current_path = lib_dir + version
