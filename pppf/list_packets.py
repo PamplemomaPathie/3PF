@@ -165,13 +165,13 @@ def display_libs(options):
     custom_libs = options.get("lib", [])
     print(f"3PF Available libs: {len(libs)}")
     if custom_libs != []:
-        print(f"Selected {len(custom_libs)} libraries: {', '.join(custom_libs)}")
+        print(f"Selected {len(custom_libs)} librar{'y' if len(custom_libs) == 1 else 'ies'}: {', '.join(custom_libs)}")
     print('')
     for lib in libs:
-        if not (libs[lib] in custom_libs or custom_libs == []):
+        if not (lib in custom_libs or custom_libs == []):
             continue
-        desc = libs[lib].get("desc", "Custom library")
-        desc = desc if desc != None else "Custom library"
+        desc = libs[lib].get("desc", "Custom packet")
+        desc = desc if desc != None else "Custom packet"
         print(f"- {lib}: {desc}.")
 
 
