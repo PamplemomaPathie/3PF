@@ -133,7 +133,7 @@ def get_lib_info(lib, content):
     return default_lib
 
 
-def reload_libs(options):
+def reload_libs():
     lib_list = get_libs_inside_content(LIBDIR)
 
     libs = {}
@@ -154,6 +154,10 @@ def reload_libs(options):
     save_to_json(libs, BASEDIR + "libs.json")
 
 
+def reload_command(args):
+    reload_libs()
+
+
 
 
 def display_libs(options):
@@ -161,7 +165,6 @@ def display_libs(options):
     if libs == {}:
         print("Error: Missing library configuration, please consider reload or reinstall 3PF.")
         sys.exit(1)
-    print(options)
     custom_libs = options.get("lib", [])
     print(f"3PF Available libs: {len(libs)}")
     if custom_libs != []:
@@ -205,9 +208,7 @@ def list_packets(args):
     }
 
     parse_arguments(args, libs)
-    print(libs)
     try:
-        reload_libs(libs)
         display_libs(libs)
     except Exception as e:
         print("Wrong configuration of 3PF, please consider reinstalling the client.")
