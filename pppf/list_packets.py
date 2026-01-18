@@ -14,11 +14,11 @@ def print_usage():
     print("You can also display more info about specific packets by naming them.")
     print("\nFlags:")
     print("  --help\t\tDisplay help for list command.")
-    print("  --detail\t\tDisplay packet details.")
+    print("  --no-detail\t\tDon't display packet details.")
 
 
 def flag_detail(lib, args, i) -> bool:
-    lib["detail"] = True
+    lib["detail"] = False
 
 def flag_version(lib, args, i) -> bool:
     try:
@@ -32,7 +32,7 @@ def flag_lib(lib, args, i) -> bool:
     lib["lib"].append(args[i + 1])
 
 flags = {
-    "--detail": {
+    "--no-detail": {
         "required": 0,
         "function": flag_detail
     }
@@ -181,7 +181,7 @@ def list_packets(args):
         sys.exit(0)
 
     libs = {
-        "detail": False,
+        "detail": True,
         "lib": []
     }
 
