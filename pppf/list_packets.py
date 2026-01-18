@@ -13,7 +13,7 @@ def print_usage():
     print("List all installed packets.")
     print("You can also display more info about specific packets by naming them.")
     print("\nFlags:")
-    print("  --help\t\tDisplay help for list command.")
+    print("  --help\t\tDisplay this help message.")
     print("  --no-detail\t\tDon't display packet details.")
 
 
@@ -155,8 +155,14 @@ def reload_libs():
 
 
 def reload_command(args):
-    reload_libs()
+    if len(args) >= 1 and ("help"in args or "--help" in args):
+        print("Usage: 3pf reload\n")
+        print("Reload 3PF packets configuration.")
+        print("\nFlags:")
+        print("  --help\tDisplay this help message.")
+        sys.exit(0)
 
+    reload_libs()
 
 
 
