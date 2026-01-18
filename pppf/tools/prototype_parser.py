@@ -2,14 +2,7 @@
 
 import sys
 
-def read_file(filename: str):
-    try:
-        with open(filename, "r") as file:
-            content = file.read()
-    except FileNotFoundError:
-        print(f"No file {filename}.")
-        sys.exit(1)
-    return content
+from pppf.tools.file_tools import read_file
 
 def get_function_prototypes(filename: str):
     content = read_file(filename)
