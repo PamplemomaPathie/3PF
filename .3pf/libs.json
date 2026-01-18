@@ -6,23 +6,21 @@
       "1": {
         "changelog": "",
         "tests": [
-          [
-            "mini_printf_str",
-            "mini_printf_char",
-            "mini_printf_num",
-            "mini_printf_overflow",
-            "debug_print_test",
-            "my_getnbr",
-            "my_getnbr_error",
-            "char_in_str_true",
-            "char_in_str_false",
-            "bst_getnbr_valid_input",
-            "bst_getnbr_multiple_numbers",
-            "bst_getnbr_no_numbers",
-            "bst_getnbr_null_string",
-            "bst_getnbr_empty_string",
-            "bst_getnbr_negative_number"
-          ]
+          "mini_printf_str",
+          "mini_printf_char",
+          "mini_printf_num",
+          "mini_printf_overflow",
+          "debug_print_test",
+          "my_getnbr",
+          "my_getnbr_error",
+          "char_in_str_true",
+          "char_in_str_false",
+          "bst_getnbr_valid_input",
+          "bst_getnbr_multiple_numbers",
+          "bst_getnbr_no_numbers",
+          "bst_getnbr_null_string",
+          "bst_getnbr_empty_string",
+          "bst_getnbr_negative_number"
         ],
         "headers": []
       }
@@ -35,14 +33,12 @@
       "1": {
         "changelog": "",
         "tests": [
-          [
-            "my_strlen",
-            "my_strlen_error",
-            "my_strdup",
-            "my_strcpy",
-            "my_strcmp",
-            "my_strncmp"
-          ]
+          "my_strlen",
+          "my_strlen_error",
+          "my_strdup",
+          "my_strcpy",
+          "my_strcmp",
+          "my_strncmp"
         ],
         "headers": []
       }

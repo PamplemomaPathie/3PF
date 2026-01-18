@@ -147,7 +147,7 @@ def reload_libs(options):
             content = os.listdir(current_path)
             current_lib["versions"][version] = {}
             current_lib["versions"][version]["changelog"] = ""
-            current_lib["versions"][version]["tests"] = get_lib_tests(current_path + "/", content)
+            current_lib["versions"][version]["tests"] = get_lib_tests(current_path + "/", content)[0]
             current_lib["versions"][version]["headers"] = get_lib_headers(current_path + "/", content)
         libs[lib] = current_lib
     print(libs)
@@ -173,6 +173,23 @@ def display_libs(options):
         desc = libs[lib].get("desc", "Custom packet")
         desc = desc if desc != None else "Custom packet"
         print(f"- {lib}: {desc}.")
+        print(f"\tAvailable functions:")
+        prototypes = libs[lib]["content"].split("\n")
+        if prototypes[-1] == "":
+            prototypes = prototypes[:-1]
+        for function in prototypes:
+            print(f"\t\t{function}")
+        print(f"\tAvailable versions:")
+        versions = libs[lib]["versions"]
+        for version in versions:
+            changelog = versions[version].get("changelog", "Custom version")
+            changelog = changelog if changelog != "" else "Custom version"
+            print(f"\t\t{version}: {changelog}")
+            tests = versions[version].get('tests', [])
+            print(f"\t\t  Available unit tests: {len(tests)}")
+            print(f"\t\t  Headers: {len(versions[version].get('headers', []))}")
+
+        print('')
 
 
 def list_packets(args):
