@@ -7,6 +7,7 @@ from pppf.tools.file_tools import read_file
 import os
 import sys
 
+
 def print_usage():
     print("Usage: 3pf list [flags] [packets]\n\n")
     print("List all installed packets.")
@@ -14,7 +15,6 @@ def print_usage():
     print("\nFlags:")
     print("  --help\t\tDisplay help for list command.")
     print("  --detail\t\tDisplay packet details.")
-    print("  --version <number>\tDisplay a specific version of a packet.")
 
 
 def flag_detail(lib, args, i) -> bool:
@@ -35,10 +35,6 @@ flags = {
     "--detail": {
         "required": 0,
         "function": flag_detail
-    },
-    "--version": {
-        "required": 1,
-        "function": flag_version
     }
 }
 
@@ -113,6 +109,10 @@ def get_lib_headers(path, path_content):
     return headers
 
 
+def get_all_prototypes(lib_dir):
+    print(lib_dir)
+    return read_file(lib_dir + "content.txt", exit=False)
+
 def get_lib_info(lib, content):
     default_lib = {
         "content": None,
@@ -123,7 +123,7 @@ def get_lib_info(lib, content):
     print(lib, content)
     print(lib_dir)
     if "content.txt" in content:
-        default_lib["content"] = read_file(lib_dir + "content.txt", exit=False)
+        default_lib["content"] = get_all_prototypes(lib_dir)
     else:
         print(f"Warning: Missing 'content.txt' file in '{lib}' library.")
     if "desc.txt" in content:
@@ -154,6 +154,27 @@ def reload_libs(options):
     save_to_json(libs, BASEDIR + "libs.json")
 
 
+
+
+def display_libs(options):
+    libs = load_from_json(BASEDIR + "libs.json")
+    if libs == {}:
+        print("Error: Missing library configuration, please consider reload or reinstall 3PF.")
+        sys.exit(1)
+    print(options)
+    custom_libs = options.get("lib", [])
+    print(f"3PF Available libs: {len(libs)}")
+    if custom_libs != []:
+        print(f"Selected {len(custom_libs)} libraries: {', '.join(custom_libs)}")
+    print('')
+    for lib in libs:
+        if not (libs[lib] in custom_libs or custom_libs == []):
+            continue
+        desc = libs[lib].get("desc", "Custom library")
+        desc = desc if desc != None else "Custom library"
+        print(f"- {lib}: {desc}.")
+
+
 def list_packets(args):
     if len(args) >= 1 and ("help"in args or "--help" in args):
         print_usage()
@@ -161,7 +182,6 @@ def list_packets(args):
 
     libs = {
         "detail": False,
-        "version": 0, # 0 For all versions
         "lib": []
     }
 
@@ -169,6 +189,7 @@ def list_packets(args):
     print(libs)
     try:
         reload_libs(libs)
+        display_libs(libs)
     except Exception as e:
         print("Wrong configuration of 3PF, please consider reinstalling the client.")
         print(f"Error detail: {e}")
