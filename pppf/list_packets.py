@@ -173,6 +173,8 @@ def display_libs(options):
         desc = libs[lib].get("desc", "Custom packet")
         desc = desc if desc != None else "Custom packet"
         print(f"- {lib}: {desc}.")
+        if options["detail"] == False:
+            continue
         print(f"\tAvailable functions:")
         prototypes = libs[lib]["content"].split("\n")
         if prototypes[-1] == "":
