@@ -22,5 +22,8 @@ arguments = {
     },
     "list": {
         "description": "List all available packets"
+    },
+    "reload": {
+        "description": "Reload 3PF configuration."
     }
 }

@@ -2,7 +2,7 @@
 
 from pppf.tools.display_messages import display_help, display_version
 from pppf.install_packet import install_packet
-from pppf.list_packets import list_packets
+from pppf.list_packets import list_packets, reload_command
 from pppf.remove_packet import remove_packet
 from pppf.deploy_packet import deploy_packet
 from pppf.const import arguments
@@ -13,6 +13,7 @@ arguments.get("install")["function"] = install_packet
 arguments.get("remove")["function"] = remove_packet
 arguments.get("deploy")["function"] = deploy_packet
 arguments.get("list")["function"] = list_packets
+arguments.get("reload")["function"] = reload_command
 
 def parse_args(args):
 
