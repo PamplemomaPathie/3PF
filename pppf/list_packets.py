@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-from pppf.tools.tools import list_dir
 from pppf.const import BASEDIR, LIBDIR
 from pppf.tools.json_tools import save_to_json, load_from_json
 from pppf.tools.prototype_parser import get_cleaned_function_prototypes
+from pppf.tools.file_tools import read_file
 import os
 import sys
 
@@ -119,12 +119,17 @@ def get_lib_info(lib, content):
         "desc": None,
         "versions": {}
     }
+    lib_dir = LIBDIR + lib + "/"
     print(lib, content)
-    if "content.txt" not in content:
+    print(lib_dir)
+    if "content.txt" in content:
+        default_lib["content"] = read_file(lib_dir + "content.txt", exit=False)
+    else:
         print(f"Warning: Missing 'content.txt' file in '{lib}' library.")
-    if "desc.txt" not in content:
+    if "desc.txt" in content:
+        default_lib["desc"] = read_file(lib_dir + "desc.txt", exit=False)
+    else:
         print(f"Warning: Missing 'desc.txt' file in '{lib}' library.")
-    default_lib["content"] = None
     return default_lib
 
 

@@ -1,6 +1,6 @@
 {
   "libc": {
-    "content": null,
+    "content": "int bst_getnbr(char const *str, char c, int *pos)\nint char_in_str(char ch, char const *str)\nint my_getnbr(char const *str)\nint mini_printf(const char *format, ...)\nint debug_print(char const *format, ...)\n",
     "desc": null,
     "versions": {
       "1": {
@@ -29,7 +29,7 @@
     }
   },
   "cstring": {
-    "content": null,
+    "content": "int my_strlen(char const *str)\nchar *my_strdup(char const *src)\nchar *my_strcpy(char *dest, char const *src)\nint my_strcmp(char const *s1, char const *s2)\nint my_strncmp(char const *s1, char const *s2, int n)\n",
     "desc": null,
     "versions": {
       "1": {
