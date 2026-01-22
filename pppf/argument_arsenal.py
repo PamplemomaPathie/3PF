@@ -13,10 +13,21 @@ term_size = get_terminal_size().columns - 4
 """
 Prints an error message.
 
+@param reason: reason of the error.
 @param message: The message to be displayed.
 """
-def error(message: str):
-    print(f"Error: {message}")
+def error(reason: str, message: str):
+    global term_size
+
+    print("\033[31m\033[1mError: \033[0m", end='\033[1m')
+    print(reason, end='\033[0m' + (" " if reason != "" else ""))
+    size = term_size - (len(reason) + 7)
+    for i in range(1000):
+        if len(message) < size:
+            print(f"{message}")
+            break;
+        print(f"  {message[:size]}")
+        message = message[size:]
     sys.exit(1)
 
 
@@ -164,30 +175,39 @@ class ArgumentArsenal:
             if current_i > 0:
                 current_i -= 1; continue
             found = False
+            if args[i] == "--help":
+                self._print_usage(); sys.exit(0)
             for flag in self._flags:
                 if args[i] == flag["name"]:
                     if flag["required"] + i + 1 > len(args):
-                        error(f"'{args[i][2:]}' flag requires {flag['required']} parameter(s).")
+                        error("", f"'{args[i][2:]}' flag requires {flag['required']} parameter(s).")
                     found = True
                     current_i = flag["required"]
                     print("Found flag:", args[i])
                     trimmed_args = args[i + 1:]
                     trimmed_args = trimmed_args[:current_i]
                     if flag["function"](trimmed_args, self._options) == False:
-                        error(f"Invalid parameter(s) in '{args[i][2:]}' flag.")
+                        error("Invalid parameter(s)", f"in '{args[i][2:]}' flag.")
                     break;
 
             if found == False:
-                print("Invalid flag:", args[i])
+                error("Invalid flag:", f"'{args[i][2:]}'.")
+        return self._options
 
 
 def test(args, options) -> bool:
-    print("CALLING FUNCTION, ", args)
+    options["lib"].append(args)
     return True;
 
-make = ArgumentArsenal("make", {}, args=["object", "size"], desc="baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba THIS IS A VERY LONG DESCRIPTION oh my freaking god blud WHY ARE YOU SAYING SO MUCH STUFFF");
+options = {
+    "lib": []
+}
+
+make = ArgumentArsenal("make", options, args=["object", "size"], desc="baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba THIS IS A VERY LONG DESCRIPTION oh my freaking god blud WHY ARE YOU SAYING SO MUCH STUFFF");
 make.make_flag("--version", ["name", "num"], test, "Check VERSION")
 make.make_flag("--pathie", [], test, "On Off to see the real version of pathie.")
 make.make_flag("--nononoBlud", ["GoofyGuy", "PenisSize", "Secret Santa Argument"], test, "Silly description")
 #make._print_usage()
-make.parse_argument(sys.argv[1:])
+options = make.parse_argument(sys.argv[1:])
+
+print(options)
