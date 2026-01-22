@@ -10,6 +10,15 @@ from shutil import get_terminal_size
 
 term_size = get_terminal_size().columns - 4
 
+"""
+Prints an error message.
+
+@param message: The message to be displayed.
+"""
+def error(message: str):
+    print(f"Error: {message}")
+    sys.exit(1)
+
 
 """
 Return a custom display of a flag.
@@ -157,10 +166,15 @@ class ArgumentArsenal:
             found = False
             for flag in self._flags:
                 if args[i] == flag["name"]:
+                    if flag["required"] + i + 1 > len(args):
+                        error(f"'{args[i][2:]}' flag requires {flag['required']} parameter(s).")
                     found = True
                     current_i = flag["required"]
                     print("Found flag:", args[i])
-                    flag["function"](args, self._options) # Need to send only the good args
+                    trimmed_args = args[i + 1:]
+                    trimmed_args = trimmed_args[:current_i]
+                    if flag["function"](trimmed_args, self._options) == False:
+                        error(f"Invalid parameter(s) in '{args[i][2:]}' flag.")
                     break;
 
             if found == False:
@@ -168,6 +182,7 @@ class ArgumentArsenal:
 
 
 def test(args, options) -> bool:
+    print("CALLING FUNCTION, ", args)
     return True;
 
 make = ArgumentArsenal("make", {}, args=["object", "size"], desc="baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba THIS IS A VERY LONG DESCRIPTION oh my freaking god blud WHY ARE YOU SAYING SO MUCH STUFFF");
