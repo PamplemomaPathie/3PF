@@ -10,6 +10,7 @@ from shutil import get_terminal_size
 
 term_size = get_terminal_size().columns - 4
 
+
 """
 Return a custom display of a flag.
 
@@ -84,6 +85,7 @@ def generate_helper(name: str, args, desc: str, flags):
         print(get_flagdisplay(flag))
 
 
+
 class ArgumentArsenal:
     """ Initialize the Argument parser """
     def __init__(self,
@@ -136,8 +138,33 @@ class ArgumentArsenal:
         }
         self._flags.append(new_flag)
 
-    def _print_flags(self):
-        print(self._name, self._flags)
+
+    def parse_argument(self, args):
+        print(args)
+        required_args = len(self._args)
+        if (len(args) < required_args):
+            print(f"{self._name}: Not enough arguments.")
+            self._print_usage()
+            sys.exit(1)
+
+        args_output = []
+        for i in range(required_args):
+            args_output.append(args[i])
+        current_i = 0
+        for i in range(required_args, len(args)):
+            if current_i > 0:
+                current_i -= 1; continue
+            found = False
+            for flag in self._flags:
+                if args[i] == flag["name"]:
+                    found = True
+                    current_i = flag["required"]
+                    print("Found flag:", args[i])
+                    flag["function"](args, self._options) # Need to send only the good args
+                    break;
+
+            if found == False:
+                print("Invalid flag:", args[i])
 
 
 def test(args, options) -> bool:
@@ -147,5 +174,5 @@ make = ArgumentArsenal("make", {}, args=["object", "size"], desc="baba baba baba
 make.make_flag("--version", ["name", "num"], test, "Check VERSION")
 make.make_flag("--pathie", [], test, "On Off to see the real version of pathie.")
 make.make_flag("--nononoBlud", ["GoofyGuy", "PenisSize", "Secret Santa Argument"], test, "Silly description")
-make._print_flags()
-make._print_usage()
+#make._print_usage()
+make.parse_argument(sys.argv[1:])
