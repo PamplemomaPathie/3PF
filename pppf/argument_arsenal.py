@@ -48,15 +48,27 @@ def get_flagdisplay(flag) -> str:
 Generate a helper of a command automatically based on the current flags.
 
 @param name: name of the command.
+@param args: A list of arguments that the command will take.
 @param desc: Description of the command.
 @param flags: Dictionary of the flags with at least:
     - "--flag_name"
       - "description"
 """
-def generate_helper(name: str, desc: str, flags):
+def generate_helper(name: str, args, desc: str, flags):
     global term_size
 
-    print(f"Usage: 3pf {name}\n") # Need to find a way to be customisable
+    usage = f"Usage: 3pf {name}"
+    current_size = len(usage)
+    for arg in args:
+        current = f" <{arg}>"
+        current_size += len(current)
+        if current_size > term_size:
+            usage += "\n  "
+            current_size = 2
+        usage += current
+    usage += " [flags]\n"
+    print(usage)
+    del usage
 
     for i in range(1000):
         if len(desc) < term_size:
@@ -77,13 +89,15 @@ class ArgumentArsenal:
     def __init__(self,
         command: str,               # Command name
         options,                    # Option you're passing to store the arguments
+        args = [],                  # Argument given to the command
         helper: str = None,         # Optional help message for '--help'
         desc: str = None            # Optional desc for auto-generated '--help'
     ):
         self._name = command
         self._options = options
         self._helper = helper
-        self._desc = desc
+        self._desc = desc if desc else "No description provided."
+        self._args = args
 
         self._flags = []
 
@@ -92,7 +106,12 @@ class ArgumentArsenal:
         if self._helper != None:
             print(self._helper)
             return;
-        generate_helper(self._name, self._desc if self._desc else "", self._flags)
+        generate_helper(
+            self._name,
+            self._args,
+            self._desc,
+            self._flags
+        )
 
 
     """ Create a custom flag for the command """
@@ -124,7 +143,7 @@ class ArgumentArsenal:
 def test(args, options) -> bool:
     return True;
 
-make = ArgumentArsenal("make", {}, desc="baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba THIS IS A VERY LONG DESCRIPTION oh my freaking god blud WHY ARE YOU SAYING SO MUCH STUFFF");
+make = ArgumentArsenal("make", {}, args=["object", "size"], desc="baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba THIS IS A VERY LONG DESCRIPTION oh my freaking god blud WHY ARE YOU SAYING SO MUCH STUFFF");
 make.make_flag("--version", ["name", "num"], test, "Check VERSION")
 make.make_flag("--pathie", [], test, "On Off to see the real version of pathie.")
 make.make_flag("--nononoBlud", ["GoofyGuy", "PenisSize", "Secret Santa Argument"], test, "Silly description")
