@@ -8,6 +8,41 @@ import sys
 
 from shutil import get_terminal_size
 
+term_size = get_terminal_size().columns - 4
+
+"""
+Return a custom display of a flag.
+
+@param flags: an object with at least:
+    - "name"
+    - "args": ["argument1", "argument2", ...]
+    - "desc"
+"""
+def get_flagdisplay(flag) -> str:
+    global term_size
+    args = flag["args"]
+    desc = flag["desc"]
+
+    result = f"  {flag['name']}"
+    current_size = len(result)
+    for arg in args:
+        current = f" <{arg}>"
+        current_size += len(current)
+
+        if current_size > term_size - 2:
+            result += "\n    "
+            current_size = 4
+        result += current
+
+    result += "\n      "
+    for i in range(1000):
+        if len(desc) < term_size - 6:
+            result += f"  {desc}\n"
+            break;
+        result += f"  {desc[:term_size - 6]}\n"
+        desc = desc[term_size - 6:]
+    return result
+
 
 """
 Generate a helper of a command automatically based on the current flags.
@@ -19,22 +54,22 @@ Generate a helper of a command automatically based on the current flags.
       - "description"
 """
 def generate_helper(name: str, desc: str, flags):
-    size = get_terminal_size().columns - 4
-    print(size, len(desc))
-    print(f"Usage: 3pf {name}\n") # Needd to find a way to be customisable
+    global term_size
+
+    print(f"Usage: 3pf {name}\n") # Need to find a way to be customisable
 
     for i in range(1000):
-        if len(desc) < size:
+        if len(desc) < term_size:
             print(f"  {desc}")
             break;
-        print(f"  {desc[:size]}")
-        desc = desc[size:]
+        print(f"  {desc[:term_size]}")
+        desc = desc[term_size:]
 
-    print("\nFlags:")
-    print("  --help\t\tDisplay this help message.")
+    print("\nFlags:\n")
+    print("  --help\n      Display this help message.\n")
     for flag in flags:
-        required = flags[flag].get('required', 0)
-        print(f"  {flag}{' <>' * required}{'\t' * max(2 - int(required / 2), 0)}{flags[flag].get('desc', '')}")
+        required = flag.get('required', 0)
+        print(get_flagdisplay(flag))
 
 
 class ArgumentArsenal:
@@ -50,7 +85,7 @@ class ArgumentArsenal:
         self._helper = helper
         self._desc = desc
 
-        self._flags = {}
+        self._flags = []
 
     """ Print usage message """
     def _print_usage(self):
@@ -63,20 +98,24 @@ class ArgumentArsenal:
     """ Create a custom flag for the command """
     def make_flag(self,
         name: str,                      # Name of the flag ex: '--flag'
-        required_arguments: int,        # The required arguments after the flag
+        required_arguments,             # List of all the arguments
         function_called,                # The function that will be called when flag
                                             # must be 'bool func(args, options)'
         desc: str = "No description."   # Optional desc for auto-generated '--help'
     ):
-        if name in self._flags:
-            print(f"{self._name}: flag '{name}' already registered.")
-            return
+        for flag in self._flags:
+            if name == flag["name"]:
+                print(f"{self._name}: flag '{name}' already registered.")
+                return
 
-        self._flags[name] = {
-            "required": required_arguments,
+        new_flag = {
+            "name": name,
+            "args": required_arguments,
+            "required": len(required_arguments),
             "function": function_called,
             "desc": desc
         }
+        self._flags.append(new_flag)
 
     def _print_flags(self):
         print(self._name, self._flags)
@@ -86,7 +125,8 @@ def test(args, options) -> bool:
     return True;
 
 make = ArgumentArsenal("make", {}, desc="baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba THIS IS A VERY LONG DESCRIPTION oh my freaking god blud WHY ARE YOU SAYING SO MUCH STUFFF");
-make.make_flag("--version", 2, test, "Check version")
-make.make_flag("--pathie", 0, test, "On Off to see the real version of pathie.")
+make.make_flag("--version", ["name", "num"], test, "Check VERSION")
+make.make_flag("--pathie", [], test, "On Off to see the real version of pathie.")
+make.make_flag("--nononoBlud", ["GoofyGuy", "PenisSize", "Secret Santa Argument"], test, "Silly description")
 make._print_flags()
 make._print_usage()
