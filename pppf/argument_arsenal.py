@@ -195,7 +195,7 @@ class ArgumentArsenal:
 
     """ Parse all argument of a command """
     def parse(self, args):
-        va_args = True if self._vaArg == None else False
+        va_args = True if self._vaArg == None else self._vaArg["optional"]
         required_args = len(self._args)
         if (len(args) < required_args):
             error(f"{self._name} command: Not enough arguments.", "", exit=False)
