@@ -75,8 +75,11 @@ Generate a helper of a command automatically based on the current flags.
 @param flags: Dictionary of the flags with at least:
     - "--flag_name"
       - "description"
+@param vaArg: Dictionary of potential vaArgs, either None, or at least:
+    - "name": The name of the vaArg
+    - "optional": Boolean to tell if the argument is optional.
 """
-def generate_helper(name: str, args, desc: str, flags):
+def generate_helper(name: str, args, desc: str, flags, vaArg):
     global term_size
 
     usage = f"Usage: 3pf {name}"
@@ -88,7 +91,12 @@ def generate_helper(name: str, args, desc: str, flags):
             usage += "\n  "
             current_size = 2
         usage += current
-    usage += " [flags]\n"
+    usage += " [flags]"
+    if vaArg != None:
+        usage += " [" if vaArg["optional"] == True else " <"
+        usage += vaArg["name"]
+        usage += "]" if vaArg["optional"] == True else ">"
+    usage += "\n"
     print(usage)
     del usage
 
@@ -122,6 +130,8 @@ class ArgumentArsenal:
         self._desc = desc if desc else "No description provided."
         self._args = args
 
+        self._vaArg = None
+
         self._flags = []
 
     """ Print usage message """
@@ -133,7 +143,8 @@ class ArgumentArsenal:
             self._name,
             self._args,
             self._desc,
-            self._flags
+            self._flags,
+            self._vaArg
         )
 
 
@@ -160,6 +171,16 @@ class ArgumentArsenal:
         self._flags.append(new_flag)
 
 
+    """ Enable variadic arguments for the command """
+    def enable_va_arg(self, name: str, function, optional=True):
+        self._vaArg = {
+            "name": name,
+            "function": function,
+            "optional": optional
+        }
+
+
+    """ Parse all argument of a command """
     def parse_argument(self, args):
         print(args)
         required_args = len(self._args)
@@ -191,25 +212,35 @@ class ArgumentArsenal:
                     break;
 
             if found == False:
-                if args[i][:2] == '--':
-                    error("Invalid flag:", f"'{args[i][2:]}'.")
-                error("Invalid option:", f"'{args[i]}'.")
+                if self._vaArg == None:
+                    if args[i][:2] == '--':
+                        error("Invalid flag:", f"'{args[i][2:]}'.")
+                    error("Invalid option:", f"'{args[i]}'.")
+                self._vaArg["function"](args[i], self._options)
         return self._options
 
 
-def test(args, options) -> bool:
-    options["lib"].append(args)
-    return True;
+if __name__ == "__main__":
 
-options = {
-    "lib": []
-}
+    def test(args, options) -> bool: # Adds the arguments to option.
+        options["lib"].append(args)
+        return True;
 
-make = ArgumentArsenal("make", options, args=["object", "size"], desc="baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba THIS IS A VERY LONG DESCRIPTION oh my freaking god blud WHY ARE YOU SAYING SO MUCH STUFFF");
-make.make_flag("--version", ["name", "num"], test, "Check VERSION")
-make.make_flag("--pathie", [], test, "On Off to see the real version of pathie.")
-make.make_flag("--nononoBlud", ["GoofyGuy", "PenisSize", "Secret Santa Argument"], test, "Silly description")
-#make._print_usage()
-options = make.parse_argument(sys.argv[1:])
+    def sillyArgs(current: str, options) -> bool:
+        options["lib"].append("Silly: " + current)
+        return True
 
-print(options)
+    options = {
+        "lib": []
+    }
+
+    make = ArgumentArsenal("make", options, args=["object", "size"], desc="baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba THIS IS A VERY LONG DESCRIPTION oh my freaking god blud WHY ARE YOU SAYING SO MUCH STUFFF");
+
+    make.enable_va_arg("Silly", sillyArgs, optional=False)
+
+    make.make_flag("--version", ["name", "num"], test, "Check VERSION")
+    make.make_flag("--pathie", [], test, "On Off to see the real version of pathie.")
+    make.make_flag("--nononoBlud", ["GoofyGuy", "PenisSize", "Secret Santa Argument"], test, "Silly description")
+    options = make.parse_argument(sys.argv[1:])
+
+    print(options)
