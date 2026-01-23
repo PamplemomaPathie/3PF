@@ -191,8 +191,9 @@ class ArgumentArsenal:
                     break;
 
             if found == False:
-                arg_display = args[i][2:] if args[i][:2] == '--' else args[i]
-                error("Invalid flag:", f"'{arg_display}'.")
+                if args[i][:2] == '--':
+                    error("Invalid flag:", f"'{args[i][2:]}'.")
+                error("Invalid option:", f"'{args[i]}'.")
         return self._options
 
 
