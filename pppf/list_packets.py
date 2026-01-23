@@ -1,70 +1,12 @@
 #!/usr/bin/python3
 
 from pppf.const import BASEDIR, LIBDIR
+from pppf.argument_arsenal import ArgumentArsenal
 from pppf.tools.json_tools import save_to_json, load_from_json
 from pppf.tools.prototype_parser import get_cleaned_function_prototypes
 from pppf.tools.file_tools import read_file
 import os
 import sys
-
-
-def print_usage():
-    print("Usage: 3pf list [flags] [packets]\n\n")
-    print("List all installed packets.")
-    print("You can also display more info about specific packets by naming them.")
-    print("\nFlags:")
-    print("  --help\t\tDisplay this help message.")
-    print("  --no-detail\t\tDon't display packet details.")
-
-
-def flag_detail(lib, args, i) -> bool:
-    lib["detail"] = False
-
-def flag_version(lib, args, i) -> bool:
-    try:
-        version = int(args[i + 1])
-        lib["version"] = version
-    except Exception as e:
-        print(f"Error: '{args[i + 1]}' is not a valid number for flag version.")
-        return False
-
-def flag_lib(lib, args, i) -> bool:
-    lib["lib"].append(args[i + 1])
-
-flags = {
-    "--no-detail": {
-        "required": 0,
-        "function": flag_detail
-    }
-}
-
-def parse_arguments(args, libs):
-    current_param = 0
-
-    for i in range(len(args)):
-        if current_param > 0:
-            current_param -= 1
-            continue
-
-        if args[i] in flags:
-            current = flags[args[i]]
-
-            if current.get("required", 0) + i + 1 > len(args):
-                print(f"Error: '{args[i][2:]}' flag requires {current.get('required', 0)} parameters.")
-                sys.exit(1)
-
-            func = current.get("function", None)
-            if func != None:
-                if func(libs, args, i) == False:
-                    sys.exit(2)
-                current_param = current.get("required", 0)
-
-        elif args[i].startswith("--"):
-            print(f"Error: '{args[i]}' unknown option in 'list' command.")
-            sys.exit(1)
-
-        else:
-            libs["lib"].append(args[i])
 
 
 """
@@ -203,19 +145,31 @@ def display_libs(options):
         print('')
 
 
-def list_packets(args):
-    if len(args) >= 1 and ("help"in args or "--help" in args):
-        print_usage()
-        sys.exit(0)
+def flagD(args, options) -> bool:
+    options["detail"] = False
+    return True
 
-    libs = {
+def handleVaArgArgument(current: str, options) -> bool:
+    options["lib"].append(current)
+    return True
+
+def list_packets(args):
+
+    options = {
         "detail": True,
         "lib": []
     }
 
-    parse_arguments(args, libs)
+    list_command = ArgumentArsenal("list", options, args=[],
+      desc="List all installed packets.", additional=
+      "You can also display more info about specific packets by naming them.")
+
+    list_command.enable_va_arg("packets", handleVaArgArgument)
+    list_command.make_flag("--no-detail", [], flagD, "Don't display packet details.")
+
+    list_command.parse(args)
     try:
-        display_libs(libs)
+        display_libs(options)
     except Exception as e:
         print("Wrong configuration of 3PF, please consider reinstalling the client.")
         print(f"Error detail: {e}")
