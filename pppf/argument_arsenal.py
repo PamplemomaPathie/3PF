@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
-#from pppf.const import BASEDIR, LIBDIR
-#from pppf.tools.json_tools import save_to_json, load_from_json
-#from pppf.tools.file_tools import read_file
+ITALIC="\033[3m"
+RESET="\033[0m"
+
 import os
 import sys
 
@@ -72,6 +72,7 @@ Generate a helper of a command automatically based on the current flags.
 @param name: name of the command.
 @param args: A list of arguments that the command will take.
 @param desc: Description of the command.
+@param additional: Additional description.
 @param flags: Dictionary of the flags with at least:
     - "--flag_name"
       - "description"
@@ -79,7 +80,7 @@ Generate a helper of a command automatically based on the current flags.
     - "name": The name of the vaArg
     - "optional": Boolean to tell if the argument is optional.
 """
-def generate_helper(name: str, args, desc: str, flags, vaArg):
+def generate_helper(name: str, args, desc: str, additional: str, flags, vaArg):
     global term_size
 
     usage = f"Usage: 3pf {name}"
@@ -106,8 +107,17 @@ def generate_helper(name: str, args, desc: str, flags, vaArg):
             break;
         print(f"  {desc[:term_size]}")
         desc = desc[term_size:]
+    if additional != None:
+        print(ITALIC, end='')
+        for i in range(1000):
+            if len(additional) < term_size:
+                print(f"  {additional}")
+                break;
+            print(f"  {additional[:term_size]}")
+            additional = additional[term_size:]
+    print(RESET)
 
-    print("\nFlags:\n")
+    print("Flags:\n")
     print("  --help\n      Display this help message.\n")
     for flag in flags:
         required = flag.get('required', 0)
@@ -122,12 +132,14 @@ class ArgumentArsenal:
         options,                    # Option you're passing to store the arguments
         args = [],                  # Argument given to the command
         helper: str = None,         # Optional help message for '--help'
-        desc: str = None            # Optional desc for auto-generated '--help'
+        desc: str = None,           # Optional desc for auto-generated '--help'
+        additional: str = None      # Optional additional description
     ):
         self._name = command
         self._options = options
         self._helper = helper
         self._desc = desc if desc else "No description provided."
+        self._additional = additional
         self._args = args
 
         self._vaArg = None
@@ -143,6 +155,7 @@ class ArgumentArsenal:
             self._name,
             self._args,
             self._desc,
+            self._additional,
             self._flags,
             self._vaArg
         )
@@ -181,8 +194,8 @@ class ArgumentArsenal:
 
 
     """ Parse all argument of a command """
-    def parse_argument(self, args):
-        print(args)
+    def parse(self, args):
+        va_args = True if self._vaArg == None else False
         required_args = len(self._args)
         if (len(args) < required_args):
             error(f"{self._name} command: Not enough arguments.", "", exit=False)
@@ -217,6 +230,9 @@ class ArgumentArsenal:
                         error("Invalid flag:", f"'{args[i][2:]}'.")
                     error("Invalid option:", f"'{args[i]}'.")
                 self._vaArg["function"](args[i], self._options)
+                va_args = True
+        if va_args == False:
+            error(f"Additional argument(s) '{self._vaArg['name']}' required.", "")
         return self._options
 
 
@@ -234,13 +250,13 @@ if __name__ == "__main__":
         "lib": []
     }
 
-    make = ArgumentArsenal("make", options, args=["object", "size"], desc="baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba THIS IS A VERY LONG DESCRIPTION oh my freaking god blud WHY ARE YOU SAYING SO MUCH STUFFF");
+    make = ArgumentArsenal("make", options, args=["object", "size"], desc="baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba baba THIS IS A VERY LONG DESCRIPTION oh my freaking god blud WHY ARE YOU SAYING SO MUCH STUFFF", additional="This is silly isn't it?");
 
     make.enable_va_arg("Silly", sillyArgs, optional=False)
 
     make.make_flag("--version", ["name", "num"], test, "Check VERSION")
     make.make_flag("--pathie", [], test, "On Off to see the real version of pathie.")
     make.make_flag("--nononoBlud", ["GoofyGuy", "PenisSize", "Secret Santa Argument"], test, "Silly description")
-    options = make.parse_argument(sys.argv[1:])
+    options = make.parse(sys.argv[1:])
 
     print(options)
