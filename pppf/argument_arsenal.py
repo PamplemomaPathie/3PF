@@ -16,7 +16,7 @@ Prints an error message.
 @param reason: reason of the error.
 @param message: The message to be displayed.
 """
-def error(reason: str, message: str):
+def error(reason: str, message: str, exit: bool = True):
     global term_size
 
     print("\033[31m\033[1mError: \033[0m", end='\033[1m')
@@ -28,7 +28,8 @@ def error(reason: str, message: str):
             break;
         print(f"  {message[:size]}")
         message = message[size:]
-    sys.exit(1)
+    if (exit == True):
+        sys.exit(1)
 
 
 """
@@ -163,7 +164,7 @@ class ArgumentArsenal:
         print(args)
         required_args = len(self._args)
         if (len(args) < required_args):
-            print(f"{self._name}: Not enough arguments.")
+            error(f"{self._name} command: Not enough arguments.", "", exit=False)
             self._print_usage()
             sys.exit(1)
 
@@ -183,7 +184,6 @@ class ArgumentArsenal:
                         error("", f"'{args[i][2:]}' flag requires {flag['required']} parameter(s).")
                     found = True
                     current_i = flag["required"]
-                    print("Found flag:", args[i])
                     trimmed_args = args[i + 1:]
                     trimmed_args = trimmed_args[:current_i]
                     if flag["function"](trimmed_args, self._options) == False:
