@@ -5,17 +5,8 @@ BASEDIR = "./.3pf/"
 LIBDIR = "./.3pf/libs/"
 
 arguments = {
-    "help": {
-        "description": "Display this help message"
-    },
-    "version": {
-        "description": "Show the version of 3PF"
-    },
     "install": {
         "description": "Install a packet"
-    },
-    "remove": {
-        "description": "Remove a packet"
     },
     "deploy": {
         "description": "Deploy a lib"
@@ -25,5 +16,11 @@ arguments = {
     },
     "reload": {
         "description": "Reload 3PF configuration."
+    },
+    "version": {
+        "description": "Show the version of 3PF"
+    },
+    "help": {
+        "description": "Display this help message"
     }
 }
