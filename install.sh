@@ -1,6 +1,6 @@
 #!/bin/bash
 
-BASE_DIR=".3pf"
+BASE_DIR="$HOME/.3pf"
 LIBS_DIR="$BASE_DIR/libs"
 
 BINARY="3pf"
@@ -19,12 +19,12 @@ EOF
 
 
 error() {
-    echo -e "\e[1m\e[31mError: $1\e[0m"
+    echo -e "\e[1m\e[31m$1\e[0m"
     exit 1
 }
 
 error_print() {
-    echo -e "\e[1m\e[31mError: $1\e[0m"
+    echo -e "\e[1m\e[31m$1\e[0m"
 }
 
 success() {
@@ -71,6 +71,20 @@ install_3pf() {
     info_print "Initializing libraries statuses."
     echo "{}" > "$BASE_DIR/libs.json" || error "Failed to create libraries statuses."
 
+    info_print "Moving binary"
+    mv $BINARY $BASE_DIR
+
+    info_print "Installing alias for percistance."
+
+    cat << EOF >> ~/.bashrc
+# 3pf
+if [ -d "$BASE_DIR" ] && [ -f "$BASE_DIR/$BINARY" ]; then
+    alias 3pf="$BASE_DIR/$BINARY"
+fi
+EOF
+
+    alias 3pf="$BASE_DIR/$BINARY"
+
     success "Installation finished."
 }
 
@@ -87,8 +101,7 @@ reinstall_3pf() {
 check_installation() {
     install=0
 
-    [[ -d "$BASE_DIR" ]] || { error_print "3pf is not installed."; install=1; }
-    [[ $install -eq 1 ]] && return $install
+    [[ -d "$BASE_DIR" ]] || { install=1; return $install; }
     [[ -f "$BASE_DIR/libs.json" ]] || { error_print "3pf libraries statuses are missing."; install=1; }
     [[ $install -eq 1 ]] && return $install
     [[ -d "$LIBS_DIR" ]] || { error_print "3pf libraries weren't initialized."; install=1; }
@@ -114,7 +127,7 @@ check_installation() {
     done
 
     if [[ $install -eq 0 ]]; then
-        success "3pf installation is clean!"
+        success "3pf already installed!"
     fi
 
     return $install
