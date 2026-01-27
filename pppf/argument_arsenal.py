@@ -183,6 +183,10 @@ class ArgumentArsenal:
         }
         self._flags.append(new_flag)
 
+    """ Get the main needed args """
+    def get_args(self):
+        return self._args
+
 
     """ Enable variadic arguments for the command """
     def enable_va_arg(self, name: str, function, optional=True):
@@ -202,9 +206,8 @@ class ArgumentArsenal:
             self._print_usage()
             sys.exit(1)
 
-        args_output = []
         for i in range(required_args):
-            args_output.append(args[i])
+            self._args[i] = args[i]
         current_i = 0
         for i in range(required_args, len(args)):
             if current_i > 0:
@@ -258,5 +261,7 @@ if __name__ == "__main__":
     make.make_flag("--pathie", [], test, "On Off to see the real version of pathie.")
     make.make_flag("--nononoBlud", ["GoofyGuy", "PenisSize", "Secret Santa Argument"], test, "Silly description")
     options = make.parse(sys.argv[1:])
+
+    print(make.get_args())
 
     print(options)

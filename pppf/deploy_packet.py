@@ -78,5 +78,7 @@ def deploy_packet(args):
 
     deploy_command.parse(args)
 
+    options["name"] = deploy_command.get_args()[0]
+
     print(options)
 
