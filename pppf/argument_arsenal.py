@@ -207,6 +207,8 @@ class ArgumentArsenal:
             sys.exit(1)
 
         for i in range(required_args):
+            if args[i] == "--help":
+                self._print_usage(); sys.exit(0)
             self._args[i] = args[i]
         current_i = 0
         for i in range(required_args, len(args)):
@@ -229,12 +231,14 @@ class ArgumentArsenal:
 
             if found == False:
                 if self._vaArg == None:
+                    self._print_usage()
                     if args[i][:2] == '--':
                         error("Invalid flag:", f"'{args[i][2:]}'.")
                     error("Invalid option:", f"'{args[i]}'.")
                 self._vaArg["function"](args[i], self._options)
                 va_args = True
         if va_args == False:
+            self._print_usage()
             error(f"Additional argument(s) '{self._vaArg['name']}' required.", "")
         return self._options
 

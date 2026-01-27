@@ -2,12 +2,6 @@
 
 from pppf.argument_arsenal import ArgumentArsenal
 
-
-def print_usage():
-    print("Example:")
-    print('  3pf deploy "myOwnLib"\n  --descf ./desc.txt\n  --test ./tests/test_lib.c\n  --link "myFirstLib" 1\n  --header ./include/header_lib.h\n  ./srcs/filelib.c ./srcs/other_file.c')
-
-
 def read_flag_file(filename: str, flag: str):
     try:
         with open(filename, "r") as file:
@@ -60,15 +54,11 @@ def deploy_packet(args):
         "sources": []
     }
 
-    deploy_command = ArgumentArsenal("deploy", options, args=["LibName"],
+    deploy_command = ArgumentArsenal("deploy", options, args=[],
       desc="Deploy a packet in your 3PF libs.", additional=
       "The source files should be listed at the end of the command.")
 
-    deploy_command.enable_va_arg("srcs", store_sources)
-    deploy_command.make_flag("--desc", ["libDesc"], flag_desc,
-        "Set packet description.")
-    deploy_command.make_flag("--desf", ["descF.txt"], flag_desf,
-        "Set packet description from a text file.")
+    deploy_command.enable_va_arg("srcs", store_sources, optional=False)
     deploy_command.make_flag("--test", ["file.c"], flag_test,
         "Link a unit tests file to your packet.")
     deploy_command.make_flag("--link", ["libName", "version"], flag_link,
@@ -78,7 +68,8 @@ def deploy_packet(args):
 
     deploy_command.parse(args)
 
-    options["name"] = deploy_command.get_args()[0]
+    options["name"] = input("\033[1mPlease give us a name for your new lib.\033[0m\n>> ")
+    options["desc"] = input("\033[1mNow set a short description of what your lib does.\033[0m\n>> ")
 
     print(options)
 
