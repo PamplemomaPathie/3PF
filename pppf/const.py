@@ -17,6 +17,9 @@ arguments = {
     "reload": {
         "description": "Reload 3PF configuration."
     },
+    "rm": {
+        "description": "Remove a lib."
+    },
     "version": {
         "description": "Show the version of 3PF"
     },
