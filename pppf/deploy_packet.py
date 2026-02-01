@@ -2,7 +2,8 @@
 
 from pppf.argument_arsenal import ArgumentArsenal
 from pppf.tools.json_tools import load_from_json
-from pppf.const import BASEDIR
+from pppf.tools.file_tools import read_file, write_to_file, create_directory
+from pppf.const import BASEDIR, LIBDIR
 
 
 # ============================================
@@ -21,7 +22,7 @@ def read_flag_file(filename: str, flag: str):
 def flag_test(args, options) -> bool:
     if read_flag_file(args[0], "--test") == None:
         return False
-    options["unit-tests"].append(args[0])
+    options["tests"].append(args[0])
     return True
 
 def flag_link(args, options) -> bool:
@@ -33,7 +34,7 @@ def flag_link(args, options) -> bool:
         return False
 
     if args[1] not in libs[args[0]]["versions"]:
-        print(f"\033[1m> {args[0]} version\033[0m has no version '\033[1m{args[1]}\033[0m'.")
+        print(f"\033[1m> {args[0]} library\033[0m has no version '\033[1m{args[1]}\033[0m'.")
         return False
     return True
 
@@ -73,9 +74,37 @@ def ask_packet_info(options):
 
 
 
+def create_prerequisites(options, filepath: str):
+    create_directory(filepath)
+
+    version_path = filepath + "1/"
+    create_directory(version_path)
+
+    source_path = version_path + "srcs/"
+    create_directory(source_path)
+    for src in options["sources"]:
+        content = read_file(src, exit=False)
+        if content != "":
+            filename = src.split("/")[-1]
+            write_to_file(source_path + filename, content)
+
+    if len(options["tests"]) > 0:
+        create_directory(version_path + "tests/")
+        # Add test copying
+    if options["header"] != None:
+        header_path = version_path + "headers/"
+        create_directory(header_path)
+        write_to_file(header_path + options["header"],
+            read_file(options["header"], exit=False))
+
+    write_to_file(filepath + "desc.txt", options["desc"]);
+    # Add content.txt
+    # Add details.json
+
+
 def deploy_packet(args):
 
-    options = {"name": None, "desc": None, "unit-tests": [], "link": [],
+    options = {"name": None, "desc": None, "tests": [], "link": [],
         "header": None, "sources": [] }
 
     deploy_command = ArgumentArsenal("deploy", options, args=[],
@@ -94,5 +123,8 @@ def deploy_packet(args):
 
     if ask_packet_info(options) == False:
         return
+
+    filepath = LIBDIR + options["name"] + "/"
+    create_prerequisites(options, filepath)
     print(options)
 
