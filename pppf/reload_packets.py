@@ -2,12 +2,15 @@
 
 from pppf.const import BASEDIR, LIBDIR
 from pppf.argument_arsenal import ArgumentArsenal
-from pppf.tools.json_tools import save_to_json
+from pppf.tools.json_tools import save_to_json, load_from_json
 from pppf.tools.prototype_parser import get_cleaned_function_prototypes
 from pppf.tools.file_tools import read_file
 import os
 import sys
 
+
+def warning_print(content: str):
+    print(f"\033[1;35mWarning\033[0m: {content}")
 
 """
 Return the inside content of a libraries directory.
@@ -19,7 +22,7 @@ def get_libs_inside_content(lib_original_dir: str):
     for lib in lib_dir_content:
         lib_dir = lib_original_dir + lib
         if not os.path.isdir(lib_dir):
-            print(f"Warning: Can't open '{lib}' folder.")
+            warning_print(f"Can't open '{lib}' folder.")
             continue
         content = os.listdir(lib_dir)
         lib_list[lib] = content
@@ -67,11 +70,16 @@ def get_lib_info(lib, content):
     if "content.txt" in content:
         default_lib["content"] = get_all_prototypes(lib_dir)
     else:
-        print(f"Warning: Missing 'content.txt' file in '{lib}' library.")
+        warning_print(f"Missing 'content.txt' file in '{lib}' library.")
     if "desc.txt" in content:
         default_lib["desc"] = read_file(lib_dir + "desc.txt")
     else:
-        print(f"Warning: Missing 'desc.txt' file in '{lib}' library.")
+        warning_print(f"Missing 'desc.txt' file in '{lib}' library.")
+    if "details.json" in content:
+        content = load_from_json(lib_dir + "details.json")
+        default_lib["links"] = content
+    else:
+        warning_print(f"Missing 'details.json' file in '{lib}' library.")
     return default_lib
 
 
