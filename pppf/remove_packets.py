@@ -41,4 +41,4 @@ def remove_packets(args):
         return
     remove_directory(LIBDIR + name)
     reload_libs()
-    print(f"\033[1;32mSuccessfully removed \033[0m\033[1m'{name}'\033[1;32m library.\033[0m!")
+    print(f"\033[1;32mSuccessfully removed \033[0m\033[1m'{name}'\033[1;32m library\033[0m!")

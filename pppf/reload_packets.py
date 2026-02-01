@@ -32,7 +32,7 @@ def get_libs_inside_content(lib_original_dir: str):
 
 def get_lib_tests(path, path_content):
     if "tests" not in path_content:
-        return []
+        return [[]]
     full_path = path + "tests/"
     tests = os.listdir(full_path)
     try:
