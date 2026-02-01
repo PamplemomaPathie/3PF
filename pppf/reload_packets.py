@@ -63,6 +63,7 @@ def get_lib_info(lib, content, warnings_printing: bool):
     default_lib = {
         "content": None,
         "desc": None,
+        "links": None,
         "versions": {}
     }
     lib_dir = LIBDIR + lib + "/"
