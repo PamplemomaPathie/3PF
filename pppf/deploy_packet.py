@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from pppf.argument_arsenal import ArgumentArsenal
+from pppf.reload_packets import reload_command
 from pppf.tools.json_tools import load_from_json, save_to_json
 from pppf.tools.file_tools import read_file, write_to_file, create_directory
 from pppf.tools.prototype_parser import get_function_prototypes
@@ -139,5 +140,6 @@ def deploy_packet(args):
 
     filepath = LIBDIR + options["name"] + "/"
     create_prerequisites(options, filepath)
-    print(options)
+    reload_command([])
+    print(f"\033[1;32mCreated\033[0m \033[1m'{options['name']}' \033[32msuccessfully\033[0m!")
 
