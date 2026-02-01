@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from pppf.argument_arsenal import ArgumentArsenal
-from pppf.tools.json_tools import load_from_json
+from pppf.tools.json_tools import load_from_json, save_to_json
 from pppf.tools.file_tools import read_file, write_to_file, create_directory
 from pppf.tools.prototype_parser import get_function_prototypes
 from pppf.const import BASEDIR, LIBDIR
@@ -37,6 +37,9 @@ def flag_link(args, options) -> bool:
     if args[1] not in libs[args[0]]["versions"]:
         print(f"\033[1m> {args[0]} library\033[0m has no version '\033[1m{args[1]}\033[0m'.")
         return False
+    options["link"].append({args[0]: args[1]})
+
+    print(libs[args[0]]["versions"][args[1]]) # Add all the dependencies recurively
     return True
 
 def flag_header(args, options) -> bool:
@@ -106,8 +109,8 @@ def create_prerequisites(options, filepath: str):
     write_to_file(filepath + "desc.txt", options["desc"]);
     prototype_str = "\n".join(prototypes)
     write_to_file(filepath + "content.txt", prototype_str);
-    # Add content.txt
-    # Add details.json
+    details = {"link": options["link"]}
+    save_to_json(details, filepath + "details.json");
 
 
 def deploy_packet(args):
