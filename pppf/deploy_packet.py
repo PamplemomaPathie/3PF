@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 
 from pppf.argument_arsenal import ArgumentArsenal
+from pppf.tools.json_tools import load_from_json
+from pppf.const import BASEDIR
 
 def read_flag_file(filename: str, flag: str):
     try:
@@ -12,19 +14,6 @@ def read_flag_file(filename: str, flag: str):
     return content
 
 
-def flag_desc(args, options) -> bool:
-    if args[0] == "":
-        print("Please provide a valid description.")
-        return False
-    options["desc"] = args
-    return True
-
-def flag_desf(args, options) -> bool:
-    content = read_flag_file(args[0], "--desf")
-    if content == None:
-        return False
-    options["desc"] = content
-    return True
 
 def flag_test(args, options) -> bool:
     if read_flag_file(args[0], "--test") == None:
@@ -33,7 +22,17 @@ def flag_test(args, options) -> bool:
     return True
 
 def flag_link(args, options) -> bool:
-    pass
+    file = BASEDIR + "libs.json"
+
+    libs = load_from_json(file)
+    if args[0] not in libs:
+        print(f"\033[1m> Error\033[0m: '\033[1m{args[0]}\033[0m' is not a library.")
+        return False
+
+    if args[1] not in libs[args[0]]["versions"]:
+        print(f"\033[1m> {args[0]} version\033[0m has no version '\033[1m{args[1]}\033[0m'.")
+        return False
+    return True
 
 def flag_header(args, options) -> bool:
     if read_flag_file(args[0], "--header") == None:
