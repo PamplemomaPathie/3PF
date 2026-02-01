@@ -37,7 +37,7 @@ def flag_link(args, options) -> bool:
     if args[1] not in libs[args[0]]["versions"]:
         print(f"\033[1m> {args[0]} library\033[0m has no version '\033[1m{args[1]}\033[0m'.")
         return False
-    options["link"].append({args[0]: args[1]})
+    options["links"][args[0]] = args[1]
 
     print(libs[args[0]]["versions"][args[1]]) # Add all the dependencies recurively
     return True
@@ -65,8 +65,11 @@ def ask_packet_info(options):
     name = input("\033[1mPlease give us a name for your new lib.\033[0m\n>> ")
 
     libs = load_from_json(BASEDIR + "libs.json")
-    while name in libs:
-        print(f"{name} is already a library, please find another name.")
+    while name in libs or name.strip() == "":
+        if name.strip() == "":
+            print(f"Please enter a valid name.")
+        else:
+            print(f"{name} is already a library, please find another name.")
         name = input("\033[1mPlease give us a name for your new lib.\033[0m\n>> ")
 
     if name == "exit":
@@ -109,13 +112,12 @@ def create_prerequisites(options, filepath: str):
     write_to_file(filepath + "desc.txt", options["desc"]);
     prototype_str = "\n".join(prototypes)
     write_to_file(filepath + "content.txt", prototype_str);
-    details = {"link": options["link"]}
-    save_to_json(details, filepath + "details.json");
+    save_to_json(options["links"], filepath + "details.json");
 
 
 def deploy_packet(args):
 
-    options = {"name": None, "desc": None, "tests": [], "link": [],
+    options = {"name": None, "desc": None, "tests": [], "links": {},
         "header": None, "sources": [] }
 
     deploy_command = ArgumentArsenal("deploy", options, args=[],
