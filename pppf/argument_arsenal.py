@@ -19,7 +19,7 @@ Prints an error message.
 def error(reason: str, message: str, exit: bool = True):
     global term_size
 
-    print("\033[31m\033[1mError: \033[0m", end='\033[1m')
+    print("\033[1;31mError: \033[0m", end='\033[1m')
     print(reason, end='\033[0m' + (" " if reason != "" else ""))
     size = term_size - (len(reason) + 7)
     for i in range(1000):

@@ -43,6 +43,12 @@ def flag_header(args, options) -> bool:
     options["header"] = args[0]
 
 def store_sources(current: str, options) -> bool:
+    try:
+        with open(current, "r") as file:
+            content = file.read()
+    except FileNotFoundError or Exception:
+        print(f"\033[1;35mWarning\033[0m: '{current}' is not a valid file.")
+        return False
     options["sources"].append(current)
 
 
