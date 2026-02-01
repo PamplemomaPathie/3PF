@@ -68,7 +68,7 @@ def ask_packet_info(options):
     if name == "exit":
         return False
 
-    options["name"] = name
+    options["name"] = name.replace("/", "-")
 
     options["desc"] = input("\033[1mNow set a short description of what your lib does.\033[0m\n>> ")
 
@@ -85,12 +85,15 @@ def create_prerequisites(options, filepath: str):
     for src in options["sources"]:
         content = read_file(src, exit=False)
         if content != "":
-            filename = src.split("/")[-1]
-            write_to_file(source_path + filename, content)
+            src_filename = src.split("/")[-1]
+            write_to_file(source_path + src_filename, content)
 
     if len(options["tests"]) > 0:
-        create_directory(version_path + "tests/")
-        # Add test copying
+        test_path = version_path + "tests/"
+        create_directory(test_path)
+        for test in options["tests"]:
+            test_filename = test.split("/")[-1]
+            write_to_file(test_path + test_filename, read_file(test, exit=False))
     if options["header"] != None:
         header_path = version_path + "headers/"
         create_directory(header_path)
