@@ -3,6 +3,7 @@
 from pppf.argument_arsenal import ArgumentArsenal
 from pppf.tools.json_tools import load_from_json
 from pppf.tools.file_tools import read_file, write_to_file, create_directory
+from pppf.tools.prototype_parser import get_function_prototypes
 from pppf.const import BASEDIR, LIBDIR
 
 
@@ -82,7 +83,9 @@ def create_prerequisites(options, filepath: str):
 
     source_path = version_path + "srcs/"
     create_directory(source_path)
+    prototypes = []
     for src in options["sources"]:
+        prototypes += get_function_prototypes(src)
         content = read_file(src, exit=False)
         if content != "":
             src_filename = src.split("/")[-1]
@@ -101,6 +104,8 @@ def create_prerequisites(options, filepath: str):
             read_file(options["header"], exit=False))
 
     write_to_file(filepath + "desc.txt", options["desc"]);
+    prototype_str = "\n".join(prototypes)
+    write_to_file(filepath + "content.txt", prototype_str);
     # Add content.txt
     # Add details.json
 
