@@ -4,6 +4,11 @@ from pppf.argument_arsenal import ArgumentArsenal
 from pppf.tools.json_tools import load_from_json
 from pppf.const import BASEDIR
 
+
+# ============================================
+"""              FLAG FUNCTIONS           """
+# ============================================
+
 def read_flag_file(filename: str, flag: str):
     try:
         with open(filename, "r") as file:
@@ -12,8 +17,6 @@ def read_flag_file(filename: str, flag: str):
         print(f"Error: '{filename}' is not a valid file for '{flag}' flag.")
         return None
     return content
-
-
 
 def flag_test(args, options) -> bool:
     if read_flag_file(args[0], "--test") == None:
@@ -42,16 +45,32 @@ def flag_header(args, options) -> bool:
 def store_sources(current: str, options) -> bool:
     options["sources"].append(current)
 
+
+# ============================================
+"""             COMMAND FUNCTIONS          """
+# ============================================
+
+def ask_packet_info(options):
+    name = input("\033[1mPlease give us a name for your new lib.\033[0m\n>> ")
+
+    libs = load_from_json(BASEDIR + "libs.json")
+    while name in libs:
+        print(f"{name} is already a library, please find another name.")
+        name = input("\033[1mPlease give us a name for your new lib.\033[0m\n>> ")
+
+    if name == "exit":
+        return False
+
+    options["name"] = name
+
+    options["desc"] = input("\033[1mNow set a short description of what your lib does.\033[0m\n>> ")
+
+
+
 def deploy_packet(args):
 
-    options = {
-        "name": None,
-        "desc": None,
-        "unit-tests": [],
-        "link": [],
-        "header": None,
-        "sources": []
-    }
+    options = {"name": None, "desc": None, "unit-tests": [], "link": [],
+        "header": None, "sources": [] }
 
     deploy_command = ArgumentArsenal("deploy", options, args=[],
       desc="Deploy a packet in your 3PF libs.", additional=
@@ -67,8 +86,7 @@ def deploy_packet(args):
 
     deploy_command.parse(args)
 
-    options["name"] = input("\033[1mPlease give us a name for your new lib.\033[0m\n>> ")
-    options["desc"] = input("\033[1mNow set a short description of what your lib does.\033[0m\n>> ")
-
+    if ask_packet_info(options) == False:
+        return
     print(options)
 
