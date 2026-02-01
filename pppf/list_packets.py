@@ -21,9 +21,18 @@ def display_libs(options):
             continue
         desc = libs[lib].get("desc", "Custom packet")
         desc = desc if desc != None else "Custom packet"
+        if desc[len(desc) - 1] == '.':
+            desc = desc[:-1]
         print(f"- {lib}: {desc}.")
         if options["detail"] == False:
             continue
+        links = libs[lib].get("links", None)
+        if links != None and len(links) > 0:
+            link_str = ""
+            for link in links:
+                link_str += ", " if link_str != "" else ""
+                link_str += f"{link} v{links[link]}"
+            print(f"\tDependencies: {link_str}")
         print(f"\tAvailable functions:")
         prototypes = libs[lib]["content"].split("\n")
         if prototypes[-1] == "":
@@ -63,7 +72,7 @@ def list_packets(args):
       "You can also display more info about specific packets by naming them.")
 
     list_command.enable_va_arg("packets", handleVaArgArgument)
-    list_command.make_flag("--no-detail", [], flagD, "Don't display packet details.")
+    list_command.make_flag("--simple", [], flagD, "Don't display packet details.")
 
     list_command.parse(args)
     try:

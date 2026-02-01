@@ -43,7 +43,6 @@ def flag_link(args, options) -> bool:
     other_links = libs[args[0]]["links"]
     for link in other_links:
         options["links"][link] = other_links[link]
-        print(options["links"][link])
     return True
 
 def flag_header(args, options) -> bool:
