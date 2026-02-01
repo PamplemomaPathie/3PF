@@ -5,7 +5,7 @@ import sys
 from pppf.tools.file_tools import read_file
 
 def get_function_prototypes(filename: str):
-    content = read_file(filename)
+    content = read_file(filename, exit=True)
     result = content.split("\n}") # end of a function body
 
     for i in range(len(result)):

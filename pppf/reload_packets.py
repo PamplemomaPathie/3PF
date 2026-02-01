@@ -53,7 +53,7 @@ def get_lib_headers(path, path_content):
 
 def get_all_prototypes(lib_dir):
     print(lib_dir)
-    return read_file(lib_dir + "content.txt", exit=False)
+    return read_file(lib_dir + "content.txt")
 
 def get_lib_info(lib, content):
     default_lib = {
@@ -69,7 +69,7 @@ def get_lib_info(lib, content):
     else:
         print(f"Warning: Missing 'content.txt' file in '{lib}' library.")
     if "desc.txt" in content:
-        default_lib["desc"] = read_file(lib_dir + "desc.txt", exit=False)
+        default_lib["desc"] = read_file(lib_dir + "desc.txt")
     else:
         print(f"Warning: Missing 'desc.txt' file in '{lib}' library.")
     return default_lib
