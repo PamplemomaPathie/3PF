@@ -5,16 +5,16 @@ from pppf.list_packets import load_libs, print_lib
 from pppf.reload_packets import reload_libs
 import os
 
-def edit_desc(name: str):
+def edit_desc(name: str, libs):
+    print(libs[name])
+
+def edit_links(name: str, libs):
     pass
 
-def edit_links(name: str):
+def edit_changelog(name: str, libs):
     pass
 
-def edit_changelog(name: str):
-    pass
-
-def edit_lib(name: str):
+def edit_lib(name: str, libs):
 
     options = {
         "desc": edit_desc,
@@ -35,7 +35,7 @@ def edit_lib(name: str):
         founded = False
         for option in options:
             if answer == option:
-                options[option](name)
+                options[option](name, libs)
                 founded = True
                 break
         if founded == False:
@@ -57,7 +57,7 @@ def edit_packets(args):
 
     print(f"\033[1mYou're currently editing '{name}' library.\033[0m")
     print_lib(name, libs[name])
-    edit_lib(name)
+    edit_lib(name, libs)
 
     reload_libs()
     print(f"\033[1;32mSuccessfully edited \033[0m\033[1m'{name}'\033[1;32m library\033[0m!")
