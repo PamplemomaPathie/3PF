@@ -24,7 +24,6 @@ def flag_nodeps(args, options) -> bool:
     return True
 
 
-
 def install_packet(args):
 
     options = {

@@ -6,6 +6,7 @@ from pppf.list_packets import list_packets
 from pppf.reload_packets import reload_command
 from pppf.deploy_packet import deploy_packet
 from pppf.remove_packets import remove_packets
+from pppf.edit_packets import edit_packets
 from pppf.const import arguments
 
 arguments.get("help")["function"] = display_help
@@ -15,6 +16,7 @@ arguments.get("deploy")["function"] = deploy_packet
 arguments.get("list")["function"] = list_packets
 arguments.get("reload")["function"] = reload_command
 arguments.get("rm")["function"] = remove_packets
+arguments.get("edit")["function"] = edit_packets
 
 def parse_args(args):
 

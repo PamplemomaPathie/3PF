@@ -17,6 +17,9 @@ arguments = {
     "reload": {
         "description": "Reload 3PF configuration."
     },
+    "edit": {
+        "description": "Edit packet informations."
+    },
     "rm": {
         "description": "Remove a lib."
     },
