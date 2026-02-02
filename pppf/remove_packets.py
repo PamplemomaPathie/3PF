@@ -27,6 +27,9 @@ def remove_directory(path):
     except Exception:
         return
 
+def remove_lib(name: str):
+    remove_directory(LIBDIR + name)
+
 def remove_packets(args):
 
     remove_command = ArgumentArsenal("rm", [], args=["libName"],
@@ -39,6 +42,6 @@ def remove_packets(args):
     if args[0] not in libs:
         print(f"\033[1;31mError\033[0m: '\033[1m{args[0]}\033[0m' is not a library.")
         return
-    remove_directory(LIBDIR + name)
+    remove_lib(name)
     reload_libs()
     print(f"\033[1;32mSuccessfully removed \033[0m\033[1m'{name}'\033[1;32m library\033[0m!")
