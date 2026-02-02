@@ -6,8 +6,8 @@ import sys
 
 
 def print_usage():
-    print("Usage: 3pf install <title> [flags]\n")
-    print("\nInstall any packet.")
+    print("Usage: 3pf install <packet-name> <dest> [flags]\n")
+    print("\nInstall a <packet-name> packet to a <dest> directory.")
     print("\nFlags:")
     print("  --help\t\tHelp for install command.")
     print("  --tests\t\tInstall packet with its unit test files.")
@@ -18,12 +18,20 @@ def print_usage():
 
 
 def flag_tests(lib, args, i) -> bool:
+    lib["unit-tests"] = True
     return True
 
 def flag_version(lib, args, i) -> bool:
+    try:
+        val = int(args[i + 1])
+    except ValueError:
+        print("No version number provided after '--version'.")
+        return False
+    lib["version"] = args[i + 1]
     return True
 
 def flag_nodeps(lib, args, i) -> bool:
+    lib["dependencies"] = False
     return True
 
 
@@ -69,21 +77,19 @@ def parse_arguments(args, lib):
 
 
 def install_packet(args):
-    # print(f"Installing packet")
 
     if len(args) <= 1 or args[0] == "help" or args[0] == "--help":
         print_usage()
         sys.exit(0)
 
     lib = {
-        "name": None,
-        "desc": None,
-        "unit-tests": [],
-        "link": [],
-        "header": None,
-        "sources": []
+        "unit-tests": False,
+        "version": 0, # 0 for latest version
+        "dependencies": True
     }
 
     parse_arguments(args, lib)
+    if lib["version"] == 0:
+        lib["version"] = lib["version"] # REMINDER TO SET TO LAST VERSION
     print(lib)
 
