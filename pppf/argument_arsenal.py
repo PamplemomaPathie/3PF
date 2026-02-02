@@ -146,6 +146,7 @@ class ArgumentArsenal:
 
         self._flags = []
 
+
     """ Print usage message """
     def _print_usage(self):
         if self._helper != None:
