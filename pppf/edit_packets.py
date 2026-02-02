@@ -6,7 +6,13 @@ from pppf.reload_packets import reload_libs
 import os
 
 def edit_desc(name: str, libs):
-    print(libs[name])
+    print(f"\033[1mCurrent description\033[0m: '{libs[name]['desc']}'.")
+    print("\033[1mPlease enter a new description for this lib.\033[0m")
+    answer = input(">> ")
+    if answer == "exit":
+        print("Exited.")
+        return
+    print("\033[1;32mDescription updated\033[0m!")
 
 def edit_links(name: str, libs):
     pass
