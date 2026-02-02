@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 
 from pppf.argument_arsenal import ArgumentArsenal
-from pppf.const import BASEDIR, LIBDIR
-from pppf.tools.json_tools import load_from_json
+from pppf.const import LIBDIR
+from pppf.list_packets import load_libs
 from pppf.reload_packets import reload_libs
 import os
 
@@ -35,7 +35,7 @@ def remove_packets(args):
     remove_command.parse(args)
     name = remove_command.get_args()[0]
 
-    libs = load_from_json(BASEDIR + "libs.json")
+    libs = load_libs()
     if args[0] not in libs:
         print(f"\033[1;31mError\033[0m: '\033[1m{args[0]}\033[0m' is not a library.")
         return

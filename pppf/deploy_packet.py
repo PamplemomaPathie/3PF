@@ -2,7 +2,8 @@
 
 from pppf.argument_arsenal import ArgumentArsenal
 from pppf.reload_packets import reload_libs
-from pppf.tools.json_tools import load_from_json, save_to_json
+from pppf.tools.json_tools import save_to_json
+from pppf.list_packets import load_libs
 from pppf.tools.file_tools import read_file, write_to_file, create_directory
 from pppf.tools.prototype_parser import get_function_prototypes
 from pppf.const import BASEDIR, LIBDIR
@@ -30,7 +31,7 @@ def flag_test(args, options) -> bool:
 def flag_link(args, options) -> bool:
     file = BASEDIR + "libs.json"
 
-    libs = load_from_json(file)
+    libs = load_libs()
     if args[0] not in libs:
         print(f"\033[1m> Error\033[0m: '\033[1m{args[0]}\033[0m' is not a library.")
         return False
@@ -67,7 +68,7 @@ def store_sources(current: str, options) -> bool:
 def ask_packet_info(options):
     name = input("\033[1mPlease give us a name for your new lib.\033[0m\n>> ")
 
-    libs = load_from_json(BASEDIR + "libs.json")
+    libs = load_libs()
     while name in libs or name.strip() == "":
         if name.strip() == "":
             print(f"Please enter a valid name.")

@@ -6,11 +6,16 @@ from pppf.tools.json_tools import load_from_json
 import sys
 
 
-def display_libs(options):
+def load_libs():
     libs = load_from_json(BASEDIR + "libs.json")
     if libs == {}:
-        print("Error: Missing library configuration, please consider reload or reinstall 3PF.")
+        print("\033[1;31mError\033[0m: Missing library configuration, please consider reload or reinstall 3PF.")
         sys.exit(1)
+    return libs
+
+
+def display_libs(options):
+    libs = load_libs()
     custom_libs = options.get("lib", [])
     print(f"3PF Available libs: {len(libs)}")
     if custom_libs != []:
