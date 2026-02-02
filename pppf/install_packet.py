@@ -6,21 +6,21 @@ import sys
 
 
 
-def flag_tests(lib, args, i) -> bool:
-    lib["unit-tests"] = True
+def flag_tests(args, options) -> bool:
+    options["unit-tests"] = True
     return True
 
-def flag_version(lib, args, i) -> bool:
+def flag_version(args, options) -> bool:
     try:
-        val = int(args[i + 1])
+        val = int(args[0])
     except ValueError:
         print("No version number provided after '--version'.")
         return False
-    lib["version"] = args[i + 1]
+    options["version"] = args[0]
     return True
 
-def flag_nodeps(lib, args, i) -> bool:
-    lib["dependencies"] = False
+def flag_nodeps(args, options) -> bool:
+    options["dependencies"] = False
     return True
 
 
