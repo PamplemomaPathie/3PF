@@ -1,5 +1,5 @@
-int my_strlen(char const *str)
-char *my_strdup(char const *src)
-char *my_strcpy(char *dest, char const *src)
-int my_strcmp(char const *s1, char const *s2)
-int my_strncmp(char const *s1, char const *s2, int n)
+int my_strlen(char const *str);
+char *my_strdup(char const *src);
+char *my_strcpy(char *dest, char const *src);
+int my_strcmp(char const *s1, char const *s2);
+int my_strncmp(char const *s1, char const *s2, int n);

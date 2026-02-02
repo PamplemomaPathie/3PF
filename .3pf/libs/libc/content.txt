@@ -1,5 +1,5 @@
-int bst_getnbr(char const *str, char c, int *pos)
-int char_in_str(char ch, char const *str)
-int my_getnbr(char const *str)
-int mini_printf(const char *format, ...)
-int debug_print(char const *format, ...)
+int bst_getnbr(char const *str, char c, int *pos);
+int char_in_str(char ch, char const *str);
+int my_getnbr(char const *str);
+int mini_printf(const char *format, ...);
+int debug_print(char const *format, ...);

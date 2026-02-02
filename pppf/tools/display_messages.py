@@ -4,7 +4,7 @@ from pppf.const import arguments
 
 
 def display_version(args):
-    version_text = "3PF Packet Filter Version 0.0.1"
+    version_text = "3PF Packet Filter Version 0.1.0"
     print(version_text)
 
 
@@ -22,4 +22,4 @@ Available Commands:
         help_text += f"  {arg_name}{' ' * (7 - len(arg_name))}\t{arg_info.get('description', '')}\n"
 
     print(help_text)
-    print('Use "3pf [command] help" for more information about a command.')
+    print('Use "3pf [command] --help" for more information about a command.')
