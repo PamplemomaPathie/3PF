@@ -14,6 +14,43 @@ def load_libs():
     return libs
 
 
+def print_lib(name: str, lib, details: bool = True):
+    desc = lib.get("desc", None)
+    desc = desc if desc != None else "Custom packet"
+    if desc[len(desc) - 1] == '.':
+        desc = desc[:-1]
+
+    print(f"- {name}: {desc}.")
+    if details == False:
+        return
+
+    links = lib.get("links", None)
+    if links != None and len(links) > 0:
+        link_str = ""
+        for link in links:
+            link_str += ", " if link_str != "" else ""
+            link_str += f"{link} v{links[link]}"
+        print(f"\tDependencies: {link_str}")
+
+    prototypes = lib["content"].split("\n")
+    print(f"\tAvailable functions:")
+    if prototypes[-1] == "":
+        prototypes = prototypes[:-1]
+    for function in prototypes:
+        print(f"\t\t{function}")
+
+    versions = lib["versions"]
+    print(f"\tAvailable versions:")
+    for version in versions:
+        changelog = versions[version].get("changelog", "")
+        changelog = changelog if changelog != "" else "Custom version"
+        print(f"\t\t{version}: {changelog}")
+        tests = versions[version].get('tests', [])
+        print(f"\t\t  Available unit tests: {len(tests)}")
+        print(f"\t\t  Headers: {len(versions[version].get('headers', []))}")
+    print('')
+
+
 def display_libs(options):
     libs = load_libs()
     custom_libs = options.get("lib", [])
@@ -24,37 +61,7 @@ def display_libs(options):
     for lib in libs:
         if not (lib in custom_libs or custom_libs == []):
             continue
-        desc = libs[lib].get("desc", "Custom packet")
-        desc = desc if desc != None else "Custom packet"
-        if desc[len(desc) - 1] == '.':
-            desc = desc[:-1]
-        print(f"- {lib}: {desc}.")
-        if options["detail"] == False:
-            continue
-        links = libs[lib].get("links", None)
-        if links != None and len(links) > 0:
-            link_str = ""
-            for link in links:
-                link_str += ", " if link_str != "" else ""
-                link_str += f"{link} v{links[link]}"
-            print(f"\tDependencies: {link_str}")
-        print(f"\tAvailable functions:")
-        prototypes = libs[lib]["content"].split("\n")
-        if prototypes[-1] == "":
-            prototypes = prototypes[:-1]
-        for function in prototypes:
-            print(f"\t\t{function}")
-        print(f"\tAvailable versions:")
-        versions = libs[lib]["versions"]
-        for version in versions:
-            changelog = versions[version].get("changelog", "Custom version")
-            changelog = changelog if changelog != "" else "Custom version"
-            print(f"\t\t{version}: {changelog}")
-            tests = versions[version].get('tests', [])
-            print(f"\t\t  Available unit tests: {len(tests)}")
-            print(f"\t\t  Headers: {len(versions[version].get('headers', []))}")
-
-        print('')
+        print_lib(lib, libs[lib], details=options["detail"])
 
 
 def flagD(args, options) -> bool:
