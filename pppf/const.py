@@ -23,6 +23,12 @@ arguments = {
     "rm": {
         "description": "Remove a lib."
     },
+    "pack": {
+        "description": "Pack your 3PF libs in a simple zip file to share them."
+    },
+    "unpack": {
+        "description": "Unpack 3PF libs & merge them with your libs."
+    },
     "version": {
         "description": "Show the version of 3PF"
     },
