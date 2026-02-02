@@ -76,14 +76,14 @@ install_3pf() {
 
     info_print "Installing alias for percistance."
 
-    cat << EOF >> ~/.bashrc
-# 3pf
-if [ -d "$BASE_DIR" ] && [ -f "$BASE_DIR/$BINARY" ]; then
     alias 3pf="$BASE_DIR/$BINARY"
-fi
-EOF
 
-    alias 3pf="$BASE_DIR/$BINARY"
+    read -p "Do you want to install the persistence? (y/n) " answer
+    if [[ "$answer" == "y" || "$answer" == "Y" ]]; then
+        python3 handle_persistant_installation.py
+
+        sudo cp ./3pf_config.bash /etc/bash_completion.d/3pf
+    fi
 
     success "Installation finished."
 }

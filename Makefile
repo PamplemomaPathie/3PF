@@ -29,6 +29,10 @@ uninstall:
 	@make --no-print-directory fclean
 	@echo -e "Removing all libraries."
 	@rm -rf $(BASEDIR)
+	@read -p "Do you want to remove the persistence? (y/n) " answer; \
+	if [ "$$answer" = "y" ] || [ "$$answer" = "Y" ]; then \
+		sudo rm -rf /etc/bash_completion.d/3pf; \
+	fi
 	@echo -e "\e[1m\e[32mSuccessfully removed 3pf!\e[0m"
 
 init:
@@ -60,6 +64,7 @@ clean	:
 	@echo -e "Removing build files"
 	@rm -rf ./build
 	@rm -rf ./dist
+	@rm -rf ./3pf_config.bash
 
 fclean: clean remove
 	@rm -rf $(NAME)
