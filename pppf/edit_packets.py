@@ -149,11 +149,11 @@ def edit_lib(name: str, libs):
 
 def edit_packets(args):
 
-    remove_command = ArgumentArsenal("edit", [], args=["libName"],
+    edit_command = ArgumentArsenal("edit", [], args=["libName"],
       desc="Edit library informations.")
 
-    remove_command.parse(args)
-    name = remove_command.get_args()[0]
+    edit_command.parse(args)
+    name = edit_command.get_args()[0]
 
     libs = load_libs()
     if name not in libs:

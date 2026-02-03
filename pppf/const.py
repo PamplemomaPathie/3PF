@@ -20,6 +20,9 @@ arguments = {
     "edit": {
         "description": "Edit packet informations."
     },
+    "update": {
+        "description": "Create a new version of a packet."
+    },
     "rm": {
         "description": "Remove a lib."
     },

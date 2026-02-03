@@ -9,6 +9,7 @@ from pppf.remove_packets import remove_packets
 from pppf.edit_packets import edit_packets
 from pppf.pack_packets import pack_packets
 from pppf.unpack_packets import unpack_packets
+from pppf.update_packets import update_packets
 from pppf.const import arguments
 
 arguments.get("help")["function"] = display_help
@@ -21,6 +22,7 @@ arguments.get("rm")["function"] = remove_packets
 arguments.get("edit")["function"] = edit_packets
 arguments.get("pack")["function"] = pack_packets
 arguments.get("unpack")["function"] = unpack_packets
+arguments.get("update")["function"] = update_packets
 
 def parse_args(args):
 
