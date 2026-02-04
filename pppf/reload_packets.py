@@ -6,7 +6,6 @@ from tools.json_tools import save_to_json, load_from_json
 from tools.prototype_parser import get_cleaned_function_prototypes
 from tools.file_tools import read_file
 import os
-import sys
 
 
 def warning_print(content: str, enable_printing: bool):

@@ -6,7 +6,6 @@ from pppf.list_packets import load_libs, print_lib
 from pppf.reload_packets import reload_libs
 from tools.file_tools import write_to_file
 from tools.json_tools import save_to_json, load_from_json
-import os
 
 def edit_desc(name: str, libs):
     print(f"\033[1mCurrent description\033[0m: '{libs[name]['desc']}'.")
