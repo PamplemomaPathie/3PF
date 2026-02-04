@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from arsenals.argument_arsenal import ArgumentArsenal
-from pppf.const import BASEDIR
+from const import BASEDIR
 from tools.json_tools import load_from_json
 import sys
 

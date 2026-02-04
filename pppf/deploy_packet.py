@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from arsenals.argument_arsenal import ArgumentArsenal
-from pppf.const import BASEDIR, LIBDIR
+from const import BASEDIR, LIBDIR
 from pppf.reload_packets import reload_libs
 from pppf.list_packets import load_libs
 from tools.json_tools import save_to_json

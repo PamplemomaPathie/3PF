@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 from arsenals.bcompletion_arsenal import BCompletionArsenal
-from pppf.const import BASEDIR
 import os
 
 def handle_autocomplete():

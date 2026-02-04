@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from pppf.const import arguments
+from const import arguments
 
 
 def display_version(args):
