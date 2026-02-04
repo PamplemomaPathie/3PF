@@ -43,6 +43,35 @@ def store_sources(current: str, options) -> bool:
     options["sources"].append(current)
 
 
+# ============================================
+"""             COMMAND FUNCTIONS          """
+# ============================================
+
+def create_prerequisites(options, filepath: str, changelog: str):
+
+    create_directory(filepath)
+
+    write_to_file(filepath + "changelog.txt", changelog)
+    source_path = filepath + "srcs/"
+    create_directory(source_path)
+    for src in options["sources"]:
+        content = read_file(src, exit=False)
+        if content != "":
+            src_filename = src.split("/")[-1]
+            write_to_file(source_path + src_filename, content)
+
+    if len(options["tests"]) > 0:
+        test_path = filepath + "tests/"
+        create_directory(test_path)
+        for test in options["tests"]:
+            test_filename = test.split("/")[-1]
+            write_to_file(test_path + test_filename, read_file(test, exit=False))
+    if options["header"] != None:
+        header_path = filepath + "headers/"
+        create_directory(header_path)
+        write_to_file(header_path + options["header"],
+            read_file(options["header"], exit=False))
+
 
 def update_packets(args):
 
@@ -61,15 +90,25 @@ def update_packets(args):
     update_command.parse(args)
     name = update_command.get_args()[0]
 
-    print(options)
-
     libs = load_libs()
     if name not in libs:
         print(f"\033[1;31mError\033[0m: '\033[1m{name}\033[0m' is not a library.")
         return
 
     versions_cnt = len(libs[name]['versions'])
-    print(f"\033[1m{name} library already have {versions_cnt} version{'s' if versions_cnt > 1 else ''}.")
+    print(f"Found \033[1m{versions_cnt} version{'s' if versions_cnt > 1 else ''}\033[0m in '{name}' library.")
+
+    print("\033[1mPlease give us a changelog that summarize your version.\033[0m")
+    changelog = input(">> ")
+
+    try:
+        version = int(list(libs[name]["versions"])[-1])
+    except Exception as e:
+        print("\033[1;31mError\033[0m\033[1m: last version name is not valid.\033[0m")
+        return
+
+    filepath = LIBDIR + name + "/" + str(version + 1) + "/"
+    create_prerequisites(options, filepath, changelog)
 
     reload_libs()
     print(f"\033[1;32mSuccessfully created a new version for \033[0m\033[1m'{name}'\033[1;32m library\033[0m!")

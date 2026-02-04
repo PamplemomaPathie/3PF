@@ -96,7 +96,7 @@ def reload_libs(warnings: bool = False):
                 continue # Possibly get the changelog detection here
             content = os.listdir(current_path)
             current_lib["versions"][version] = {}
-            current_lib["versions"][version]["changelog"] = ""
+            current_lib["versions"][version]["changelog"] = read_file(current_path + "/changelog.txt")
             current_lib["versions"][version]["tests"] = get_lib_tests(current_path + "/", content)[0]
             current_lib["versions"][version]["headers"] = get_lib_headers(current_path + "/", content)
         libs[lib] = current_lib
