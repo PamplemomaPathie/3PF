@@ -4,7 +4,7 @@ from pppf.const import arguments
 
 
 def display_version(args):
-    version_text = "3PF Packet Filter Version 0.1.0"
+    version_text = "3PF Packet Filter Version 0.1.2"
     print(version_text)
 
 

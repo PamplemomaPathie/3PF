@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from pppf.tools.display_messages import display_help, display_version
+from tools.display_messages import display_help, display_version
 from pppf.install_packet import install_packet
 from pppf.list_packets import list_packets
 from pppf.reload_packets import reload_command

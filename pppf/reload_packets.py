@@ -2,9 +2,9 @@
 
 from pppf.const import BASEDIR, LIBDIR
 from pppf.argument_arsenal import ArgumentArsenal
-from pppf.tools.json_tools import save_to_json, load_from_json
-from pppf.tools.prototype_parser import get_cleaned_function_prototypes
-from pppf.tools.file_tools import read_file
+from tools.json_tools import save_to_json, load_from_json
+from tools.prototype_parser import get_cleaned_function_prototypes
+from tools.file_tools import read_file
 import os
 import sys
 

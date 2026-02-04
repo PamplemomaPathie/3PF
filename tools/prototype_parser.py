@@ -2,7 +2,7 @@
 
 import sys
 
-from pppf.tools.file_tools import read_file
+from tools.file_tools import read_file
 
 def get_py_prototypes(filename: str):
     content = read_file(filename, exit=True)

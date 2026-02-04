@@ -5,7 +5,7 @@ from pppf.const import LIBDIR
 from pppf.list_packets import load_libs
 from pppf.remove_packets import remove_lib, remove_directory
 from pppf.reload_packets import reload_libs
-from pppf.tools.json_tools import load_from_json
+from tools.json_tools import load_from_json
 import os
 
 

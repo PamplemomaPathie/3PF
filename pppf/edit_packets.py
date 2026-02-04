@@ -3,9 +3,9 @@
 from pppf.argument_arsenal import ArgumentArsenal
 from pppf.const import LIBDIR
 from pppf.list_packets import load_libs, print_lib
-from pppf.tools.file_tools import write_to_file
-from pppf.tools.json_tools import save_to_json, load_from_json
 from pppf.reload_packets import reload_libs
+from tools.file_tools import write_to_file
+from tools.json_tools import save_to_json, load_from_json
 import os
 
 def edit_desc(name: str, libs):

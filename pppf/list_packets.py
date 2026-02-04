@@ -2,7 +2,7 @@
 
 from pppf.const import BASEDIR
 from pppf.argument_arsenal import ArgumentArsenal
-from pppf.tools.json_tools import load_from_json
+from tools.json_tools import load_from_json
 import sys
 
 
