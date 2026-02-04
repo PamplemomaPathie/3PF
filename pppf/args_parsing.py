@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+from pppf.const import arguments
 from tools.display_messages import display_help, display_version
 from pppf.install_packet import install_packet
 from pppf.list_packets import list_packets
@@ -10,7 +11,6 @@ from pppf.edit_packets import edit_packets
 from pppf.pack_packets import pack_packets
 from pppf.unpack_packets import unpack_packets
 from pppf.update_packets import update_packets
-from pppf.const import arguments
 
 arguments.get("help")["function"] = display_help
 arguments.get("version")["function"] = display_version

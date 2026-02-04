@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from pppf.argument_arsenal import ArgumentArsenal
+from arsenals.argument_arsenal import ArgumentArsenal
 from pppf.const import BASEDIR
 from pppf.list_packets import load_libs
 from pppf.reload_packets import reload_libs

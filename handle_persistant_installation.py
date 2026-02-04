@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from pppf.bcompletion_arsenal import BCompletionArsenal
+from arsenals.bcompletion_arsenal import BCompletionArsenal
 from pppf.const import BASEDIR
 import os
 

@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
+from arsenals.argument_arsenal import ArgumentArsenal
 from pppf.const import BASEDIR
-from pppf.argument_arsenal import ArgumentArsenal
 import sys
 
 

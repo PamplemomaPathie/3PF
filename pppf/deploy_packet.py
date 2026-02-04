@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
-from pppf.argument_arsenal import ArgumentArsenal
+from arsenals.argument_arsenal import ArgumentArsenal
+from pppf.const import BASEDIR, LIBDIR
 from pppf.reload_packets import reload_libs
 from pppf.list_packets import load_libs
-from pppf.const import BASEDIR, LIBDIR
 from tools.json_tools import save_to_json
 from tools.file_tools import read_file, write_to_file, create_directory
 from tools.prototype_parser import get_function_prototypes
