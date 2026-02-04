@@ -49,3 +49,7 @@ And if you want to know more about a specific command:
 ```bash
 3pf <command> --help
 ```
+
+We hope 3PF will come in handy for you!
+
+<sup>📝 PP project developed by [Pathie](https://github.com/Conthrast) and [Pamplemom](https://github.com/PamplemomM).</sup>
