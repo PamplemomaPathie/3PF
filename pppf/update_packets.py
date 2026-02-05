@@ -97,13 +97,15 @@ def update_packets(args):
     print(f"Found \033[1m{versions_cnt} version{'s' if versions_cnt > 1 else ''}\033[0m in '{name}' library.")
 
     print("\033[1mWhat's the name of your version?\033[0m")
-    version = input(">> ")
+    version = input(">> ").replace("/", "-")
     print("\033[1mPlease give us a changelog that summarize your version.\033[0m")
     changelog = input(">> ")
 
-    print("Summary....")
-    input("Are you sure? (y/n) >>")
-    # Check if user is okay
+    print(f"\033[1;33mYou're about to create a new version \033[0m\033[1m'{version}'\033[33m.\033[0m")
+    validation = input("Are you sure? (y/n) >> ").strip()
+    if validation != "y" and validation != "":
+        print("\033[1;35mCanceled.\033[0m")
+        return
 
     filepath = LIBDIR + name + "/" + version + "/"
     create_prerequisites(options, filepath, changelog)
