@@ -7,7 +7,6 @@ import sys
 
 
 def flag_version(args, options) -> bool:
-    print("Add detection here")
     options["version"] = args[0]
     return True
 
@@ -15,7 +14,7 @@ def flag_version(args, options) -> bool:
 def install_packet(args):
 
     options = {
-        "version": 0, # 0 for latest version
+        "version": "1",
     }
 
     deploy_command = ArgumentArsenal("install", options,
@@ -36,7 +35,10 @@ def install_packet(args):
     if lib_not_found(name, libs):
         return
 
-    if options["version"] == 0:
-        options["version"] = options["version"] # REMINDER TO SET TO LAST VERSION
-    print(options)
+    version = options["version"]
+    if version not in libs[name]["versions"]:
+        print(f"\033[1;31mError\033[0m: '\033[1m{name}\033[0m' has no versions '\033[1m{version}\033[0m'.")
+        return
+        
+    print("pulling version", version)
 
