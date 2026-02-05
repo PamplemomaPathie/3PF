@@ -1,8 +1,9 @@
-#!/usr/bin/python3
+#!/usr/bin/python3from arsenals.argument_arsenal import ArgumentArsenal
 
-from arsenals.argument_arsenal import ArgumentArsenal
+
 from const import LIBDIR
-from pppf.list_packets import load_libs, print_lib
+from pppf.list_packets import print_lib
+from pppf.pppf_tools import load_libs
 from pppf.reload_packets import reload_libs
 from tools.file_tools import write_to_file
 from tools.json_tools import save_to_json, load_from_json

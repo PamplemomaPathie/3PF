@@ -2,7 +2,7 @@
 
 from arsenals.argument_arsenal import ArgumentArsenal
 from const import LIBDIR
-from pppf.list_packets import load_libs
+from pppf.pppf_tools import load_libs
 from pppf.remove_packets import remove_lib, remove_directory
 from pppf.reload_packets import reload_libs
 from tools.json_tools import load_from_json
