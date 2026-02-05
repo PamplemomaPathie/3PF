@@ -96,16 +96,16 @@ def update_packets(args):
     versions_cnt = len(libs[name]['versions'])
     print(f"Found \033[1m{versions_cnt} version{'s' if versions_cnt > 1 else ''}\033[0m in '{name}' library.")
 
+    print("\033[1mWhat's the name of your version?\033[0m")
+    version = input(">> ")
     print("\033[1mPlease give us a changelog that summarize your version.\033[0m")
     changelog = input(">> ")
 
-    try:
-        version = int(list(libs[name]["versions"])[-1])
-    except Exception as e:
-        print("\033[1;31mError\033[0m\033[1m: last version name is not valid.\033[0m")
-        return
+    print("Summary....")
+    input("Are you sure? (y/n) >>")
+    # Check if user is okay
 
-    filepath = LIBDIR + name + "/" + str(version + 1) + "/"
+    filepath = LIBDIR + name + "/" + version + "/"
     create_prerequisites(options, filepath, changelog)
 
     reload_libs()
