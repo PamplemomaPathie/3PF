@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from const import arguments
+from tools.string_tools import get_similar
 from tools.display_messages import display_help, display_version
 from pppf.install_packet import install_packet
 from pppf.list_packets import list_packets
@@ -32,6 +33,8 @@ def parse_args(args):
                 arguments[arg]["function"](args[1:])
             return
         else:
-            print(f"Unknown argument: {arg}")
-            display_help(args[1:])
+            print(f"\033[1;31mError\033[0m: '\033[1m{arg}\033[0m' is not a valid command. See '\033[1m3pf --help\033[0m'.")
+            similar = get_similar(arg, arguments)
+            if similar != None:
+                print(f"\033[1;36mNote: \033[33mPerhaps you were looking for \033[0m\033[1m'{similar}'\033[33m.\033[0m")
             return
