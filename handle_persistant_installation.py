@@ -6,7 +6,7 @@ import os
 def handle_autocomplete():
     model = BCompletionArsenal("3pf")
 
-    model.make_args("install", [])
+    model.make_args("install", ["--version"])
     model.make_args("deploy", ["--test", "--link", "--header"], True)
     model.make_args("list", ["--simple"])
     model.make_args("reload", [])
