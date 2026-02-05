@@ -2,6 +2,7 @@
 
 from arsenals.argument_arsenal import ArgumentArsenal
 from const import BASEDIR
+from pppf.pppf_tools import load_libs, lib_not_found
 import sys
 
 
@@ -30,6 +31,10 @@ def install_packet(args):
     user_args = deploy_command.get_args()
     name = user_args[0]
     dest = user_args[1]
+
+    libs = load_libs()
+    if lib_not_found(name, libs):
+        return
 
     if options["version"] == 0:
         options["version"] = options["version"] # REMINDER TO SET TO LAST VERSION

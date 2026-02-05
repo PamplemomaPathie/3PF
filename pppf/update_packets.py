@@ -3,7 +3,7 @@
 from arsenals.argument_arsenal import ArgumentArsenal
 from const import LIBDIR
 from pppf.reload_packets import reload_libs
-from pppf.pppf_tools import load_libs
+from pppf.pppf_tools import load_libs, lib_not_found
 from tools.file_tools import read_file, write_to_file, create_directory
 
 
@@ -89,8 +89,7 @@ def update_packets(args):
     name = update_command.get_args()[0]
 
     libs = load_libs()
-    if name not in libs:
-        print(f"\033[1;31mError\033[0m: '\033[1m{name}\033[0m' is not a library.")
+    if lib_not_found(name, libs):
         return
 
     versions_cnt = len(libs[name]['versions'])

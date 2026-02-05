@@ -2,6 +2,7 @@
 
 from const import BASEDIR
 from tools.json_tools import load_from_json
+from tools.string_tools import get_similar
 import sys
 
 
@@ -13,3 +14,14 @@ def load_libs():
     return libs
 
 
+def lib_not_found(name: str, libs):
+    if name in libs:
+        return False
+
+    similar = get_similar(name, libs)
+
+    print(f"\033[1;31mError\033[0m: '\033[1m{name}\033[0m' is not a library.")
+    if similar != None:
+        print(f"\033[1;36mNote: \033[33mPerhaps you were looking for \033[0m\033[1m'{similar}'\033[33m.\033[0m")
+
+    return True

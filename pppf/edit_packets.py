@@ -3,7 +3,7 @@
 
 from const import LIBDIR
 from pppf.list_packets import print_lib
-from pppf.pppf_tools import load_libs
+from pppf.pppf_tools import load_libs, lib_not_found
 from pppf.reload_packets import reload_libs
 from tools.file_tools import write_to_file
 from tools.json_tools import save_to_json, load_from_json
@@ -156,8 +156,7 @@ def edit_packets(args):
     name = edit_command.get_args()[0]
 
     libs = load_libs()
-    if name not in libs:
-        print(f"\033[1;31mError\033[0m: '\033[1m{name}\033[0m' is not a library.")
+    if lib_not_found(name, libs):
         return
 
     print(f"\033[1mYou're currently editing '{name}' library.\033[0m")
