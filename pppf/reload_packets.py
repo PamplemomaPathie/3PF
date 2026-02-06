@@ -54,20 +54,16 @@ def get_lib_headers(path, path_content):
     return headers
 
 
-def get_all_prototypes(lib_dir):
-    return read_file(lib_dir + "content.txt")
-
 def get_lib_info(lib, content, warnings_printing: bool):
     wp = warnings_printing
     default_lib = {
-        "content": None,
         "desc": None,
         "links": None,
         "versions": {}
     }
     lib_dir = LIBDIR + lib + "/"
-    if "content.txt" in content:
-        default_lib["content"] = get_all_prototypes(lib_dir)
+    if "group.txt" in content:
+        default_lib["group"] = read_file(lib_dir + "group.txt")
     else:
         warning_print(f"\033[1m{lib}\033[0m: Missing '\033[1mcontent.txt\033[0m' file.", wp)
     if "desc.txt" in content:
@@ -96,6 +92,7 @@ def reload_libs(warnings: bool = False):
             content = os.listdir(current_path)
             current_lib["versions"][version] = {}
             current_lib["versions"][version]["changelog"] = read_file(current_path + "/changelog.txt")
+            current_lib["versions"][version]["content"] = read_file(current_path + "/content.txt")
             current_lib["versions"][version]["tests"] = get_lib_tests(current_path + "/", content)[0]
             current_lib["versions"][version]["headers"] = get_lib_headers(current_path + "/", content)
         libs[lib] = current_lib

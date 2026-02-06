@@ -81,18 +81,19 @@ def ask_packet_info(options):
 
     options["name"] = name.replace("/", "-")
 
-    options["desc"] = input("\033[1mNow set a short description of what your lib does.\033[0m\n>> ")
-
     groups = get_all_groups(libs)
     if len(groups) == 0:
         print("\033[1mNo group found, please create your group:\033[0m")
     else:
         print(f"\033[1mAvailable groups: {', '.join(groups)}\033[0m")
-        print("  \033[2mEnter a custom name to create a new group.\033[0m")
-    options["group"] = input(" >> ").strip()
+        print("  \033[3mEnter a custom name to create a new group.\033[0m")
+    options["group"] = input(f">> \033[2m{options['name']}\033[0m >> ").strip()
+
+    print("\033[1mNow set a short description of what your lib does.\033[0m")
+    options["desc"] = input(f">> \033[2m{options['name']}\033[0m >> \033[2m{options['group']}\033[0m >> ")
 
     if options["group"] not in groups:
-        print(f"\033[1;32mSuccessfully created \033[1;37m{options['group']}\033[1;32m!\033[0m") # Need more stuff
+        print(f"\033[1;32mSuccessfully created \033[0m\033[1m{options['group']}\033[32m group!\033[0m")
 
 
 
@@ -126,7 +127,9 @@ def create_prerequisites(options, filepath: str):
 
     write_to_file(filepath + "desc.txt", options["desc"]);
     prototype_str = "\n".join(prototypes)
-    write_to_file(filepath + "content.txt", prototype_str);
+    write_to_file(version_path + "changelog.txt", "First version.")
+    write_to_file(version_path + "content.txt", prototype_str);
+    write_to_file(filepath + "group.txt", options["group"]);
     save_to_json(options["links"], filepath + "details.json");
 
 
@@ -155,5 +158,5 @@ def deploy_packet(args):
     filepath = LIBDIR + options["name"] + "/"
     create_prerequisites(options, filepath)
     reload_libs()
-    print(f"\033[1;32mCreated\033[0m \033[1m'{options['name']}' \033[32msuccessfully\033[0m!")
+    print(f"\033[1;32mCreated\033[0m \033[1m'{options['name']}' \033[32msuccessfully\033[1m!\033[0m")
 

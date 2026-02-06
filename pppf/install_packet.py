@@ -14,7 +14,7 @@ def complete_path(text, state):
 
     matches = glob.glob(expanded + '*')
 
-    matches = [m + '/' if os.path.isdir(m) else m for m in matches]
+    matches = [m + '/' if os.path.isdir(match) else match for match in matches]
     try:
         return matches[state]
     except IndexError:
