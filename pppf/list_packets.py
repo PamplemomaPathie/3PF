@@ -24,23 +24,23 @@ def print_lib(name: str, lib, details: bool = True):
             link_str += ", " if link_str != "" else ""
             link_str += f"{link} v{links[link]}"
         print(f"\tDependencies: {link_str}")
-
-    prototypes = lib["content"].split("\n")
-    print(f"\tAvailable functions:")
-    if prototypes[-1] == "":
-        prototypes = prototypes[:-1]
-    for function in prototypes:
-        print(f"\t\t{function}")
+    print(f"\tGroup: {lib.get('group', 'no group')}")
 
     versions = lib["versions"]
     print(f"\tAvailable versions:")
     for version in versions:
         changelog = versions[version].get("changelog", "")
         changelog = changelog if changelog != "" else "Custom version"
-        print(f"\t\t{version}: {changelog}")
+        print(f"\t   {version}: {changelog}")
+        prototypes = versions[version]["content"].split("\n")
+        print(f"\t     Available functions:")
+        if prototypes[-1] == "":
+            prototypes = prototypes[:-1]
+        for function in prototypes:
+            print(f"\t    \t{function}")
         tests = versions[version].get('tests', [])
-        print(f"\t\t  Available unit tests: {len(tests)}")
-        print(f"\t\t  Headers: {len(versions[version].get('headers', []))}")
+        print(f"\t     Available unit tests: {len(tests)}")
+        print(f"\t     Headers: {len(versions[version].get('headers', []))}")
     print('')
 
 
