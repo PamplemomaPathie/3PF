@@ -20,21 +20,21 @@
         "changelog": "First version.",
         "content": "int bst_getnbr(char const *str, char c, int *pos);\nint char_in_str(char ch, char const *str);\nint my_getnbr(char const *str);\nint mini_printf(const char *format, ...);\nint debug_print(char const *format, ...);",
         "tests": [
-          "mini_printf_str",
-          "mini_printf_char",
-          "mini_printf_num",
-          "mini_printf_overflow",
-          "debug_print_test",
-          "my_getnbr",
-          "my_getnbr_error",
-          "char_in_str_true",
-          "char_in_str_false",
-          "bst_getnbr_valid_input",
-          "bst_getnbr_multiple_numbers",
-          "bst_getnbr_no_numbers",
-          "bst_getnbr_null_string",
-          "bst_getnbr_empty_string",
-          "bst_getnbr_negative_number"
+          "Test(mini_printf_str, full_covr, .init = cr_redirect_stdout);",
+          "Test(mini_printf_char, full_covr, .init = cr_redirect_stdout);",
+          "Test(mini_printf_num, full_covr, .init = cr_redirect_stdout);",
+          "Test(mini_printf_overflow, full_covr, .init = cr_redirect_stdout);",
+          "Test(debug_print_test, full_covr, .init = cr_redirect_stdout);",
+          "Test(my_getnbr, full_covr);",
+          "Test(my_getnbr_error, full_covr);",
+          "Test(char_in_str_true, full_covr);",
+          "Test(char_in_str_false, full_covr);",
+          "Test(bst_getnbr_valid_input, full_covr);",
+          "Test(bst_getnbr_multiple_numbers, full_covr);",
+          "Test(bst_getnbr_no_numbers, full_covr);",
+          "Test(bst_getnbr_null_string, full_covr);",
+          "Test(bst_getnbr_empty_string, full_covr);",
+          "Test(bst_getnbr_negative_number, full_covr);"
         ],
         "headers": []
       }
@@ -49,12 +49,12 @@
         "changelog": "First version.",
         "content": "int my_strlen(char const *str);\nchar *my_strdup(char const *src);\nchar *my_strcpy(char *dest, char const *src);\nint my_strcmp(char const *s1, char const *s2);\nint my_strncmp(char const *s1, char const *s2, int n);",
         "tests": [
-          "my_strlen",
-          "my_strlen_error",
-          "my_strdup",
-          "my_strcpy",
-          "my_strcmp",
-          "my_strncmp"
+          "Test(my_strlen, full_covr);",
+          "Test(my_strlen_error, full_covr);",
+          "Test(my_strdup, full_covr, .init = cr_redirect_stdout);",
+          "Test(my_strcpy, full_covr, .init = cr_redirect_stdout);",
+          "Test(my_strcmp, full_covr);",
+          "Test(my_strncmp, full_covr);"
         ],
         "headers": []
       }
