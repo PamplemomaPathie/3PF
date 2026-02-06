@@ -28,11 +28,11 @@ def lib_not_found(name: str, libs):
 
 
 def get_all_groups(libs):
-    result = []
-
+    groups = {}
     for lib in libs:
         group = libs[lib].get("group", None)
-        if group == None:
-            continue
-        result.append(group)
-    return result
+        if group != None:
+            if groups.get(group, None) == None:
+                groups[group] = []
+            groups[group].append(lib)
+    return groups

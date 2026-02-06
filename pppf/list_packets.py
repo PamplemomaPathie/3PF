@@ -48,13 +48,7 @@ def display_libs(options):
     libs = load_libs()
     custom_libs = options["lib"]
 
-    groups = {}
-    for lib in libs:
-        group = libs[lib].get("group", None)
-        if group != None:
-            if groups.get(group, None) == None:
-                groups[group] = []
-            groups[group].append(lib)
+    groups = get_all_groups(libs)
 
     if len(custom_libs) == 0:
         print(f"3PF Available groups: {len(groups)}")
@@ -105,9 +99,8 @@ def list_packets(args):
     list_command.make_flag("--simple", [], flagD, "Don't display packet details.")
 
     list_command.parse(args)
-    display_libs(options)
     try:
-        print("", end='')
+        display_libs(options)
     except Exception as e:
         print("Wrong configuration of 3PF, please consider reinstalling the client.")
         print(f"Error detail: {e}")
