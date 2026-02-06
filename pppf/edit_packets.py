@@ -15,7 +15,7 @@ def edit_desc(name: str, libs):
     if answer == "exit":
         print("Exited.")
         return
-    write_to_file(LIBDIR + name + "/desc.txt", answer);
+    write_to_file(LIBDIR + name + "/desc.txt", answer)
     libs[name]['desc'] = answer
     print("\033[1;32mDescription updated\033[0m!")
 
@@ -35,14 +35,14 @@ def edit_links_add(name: str, libs):
 
     print("\033[1mNow specify the version you want to link.\033[0m")
 
-    all_versions = [lib for lib in libs[lib]["versions"]]
+    all_versions = [ver for ver in libs[lib]["versions"]]
     available_versions = ""
     for option in all_versions:
         available_versions += "" if available_versions == "" else ", "
-        available_versions += "v" + option
+        available_versions += option
 
     print(f"\033[1mAvailable versions\033[0m: {available_versions}.")
-    version = input(f">> \033[2mlinks\033[0m >> \033[2madd\033[0m >> \033[2m{lib}\033[0m v").strip()
+    version = input(f">> \033[2mlinks\033[0m >> \033[2madd\033[0m >> \033[2m{lib}\033[0m >> ").strip()
 
     while version not in all_versions:
         if version == "exit":
@@ -51,14 +51,14 @@ def edit_links_add(name: str, libs):
         print(f"\033[1;35mWarning\033[0m: '{version}' is not a valid version.")
         print("\033[1mPlease specify a valid version.\033[0m")
         print(f"\033[1mAvailable versions\033[0m: {available_versions}.")
-        version = input(f">> \033[2mlinks\033[0m >> \033[2madd\033[0m >> \033[2m{lib}\033[0m v").strip()
+        version = input(f">> \033[2mlinks\033[0m >> \033[2madd\033[0m >> \033[2m{lib}\033[0m >> ").strip()
 
     filepath = LIBDIR + name + "/" + "details.json"
     content = load_from_json(filepath)
     content[lib] = version
     save_to_json(content, filepath)
     libs[name]["links"][lib] = version
-    print(f"\033[1;32mSuccessfully linked \033[0m\033[1m'{lib} v{version}'\033[1;32m to library\033[0m!")
+    print(f"\033[1;32mSuccessfully linked \033[0m\033[1m'{lib} ({version})'\033[1;32m to library\033[0m!")
     
 
 def edit_links_rm(name: str, libs):
@@ -117,7 +117,35 @@ def edit_links(name: str, libs):
             print(f"\033[1;35mWarning\033[0m: '{answer}' is not an available command.")
 
 def edit_changelog(name: str, libs):
-    pass
+    print("\033[1mPlease specify the version you want to edit the changelog of.\033[0m")
+
+    all_versions = [ver for ver in libs[name]["versions"]]
+    available_versions = ""
+    for option in all_versions:
+        available_versions += "" if available_versions == "" else ", "
+        available_versions += option
+
+    print(f"\033[1mAvailable versions\033[0m: {available_versions}.")
+    version = input(f">> \033[2mchangelog\033[0m >> ").strip()
+
+    while version not in all_versions:
+        if version == "exit":
+            print("Exited.")
+            return
+        print(f"\033[1;35mWarning\033[0m: '{version}' is not a valid version.")
+        print("\033[1mPlease specify a valid version.\033[0m")
+        print(f"\033[1mAvailable versions\033[0m: {available_versions}.")
+        version = input(f">> \033[2mchangelog\033[0m >> ").strip()
+
+    print(f"\033[1mCurrent \033[0m: '{libs[name]['versions'][version].get('changelog', '')}'.")
+    print("\033[1mPlease enter a new changelog for this lib version.\033[0m")
+    answer = input(">> \033[2mchangelog\033[0m >> ")
+    if answer == "exit":
+        print("Exited.")
+        return
+    write_to_file(LIBDIR + name + "/" + version + "/changelog.txt", answer)
+    libs[name]['versions'][version]["changelog"] = answer
+    print("\033[1;32mChangelog updated\033[0m!")
 
 def edit_lib(name: str, libs):
 
