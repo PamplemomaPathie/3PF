@@ -5,6 +5,7 @@ from const import LIBDIR
 from pppf.reload_packets import reload_libs
 from pppf.pppf_tools import load_libs, lib_not_found
 from tools.file_tools import read_file, write_to_file, create_directory
+from tools.prototype_parser import get_cleaned_function_prototypes
 
 
 # ============================================
@@ -50,6 +51,15 @@ def create_prerequisites(options, filepath: str, changelog: str):
     create_directory(filepath)
 
     write_to_file(filepath + "changelog.txt", changelog)
+    try:
+        prototypes = []
+        for test in options["sources"]:
+            current_prototypes = get_cleaned_function_prototypes(test)
+            prototypes.append(current_prototypes)
+    except Exception as e:
+        prototypes = [options["sources"]]
+
+    write_to_file(filepath + "content.txt", "\n".join(prototypes[0]))
     source_path = filepath + "srcs/"
     create_directory(source_path)
     for src in options["sources"]:
