@@ -25,3 +25,14 @@ def lib_not_found(name: str, libs):
         print(f"\033[1;36mNote: \033[33mPerhaps you were looking for \033[0m\033[1m'{similar}'\033[33m.\033[0m")
 
     return True
+
+
+def get_all_groups(libs):
+    result = []
+
+    for lib in libs:
+        group = libs[lib].get("group", None)
+        if group == None:
+            continue
+        result.append(group)
+    return result

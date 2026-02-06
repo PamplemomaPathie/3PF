@@ -3,7 +3,7 @@
 from arsenals.argument_arsenal import ArgumentArsenal
 from const import BASEDIR, LIBDIR
 from pppf.reload_packets import reload_libs
-from pppf.pppf_tools import load_libs
+from pppf.pppf_tools import load_libs, get_all_groups
 from tools.json_tools import save_to_json
 from tools.file_tools import read_file, write_to_file, create_directory
 from tools.prototype_parser import get_function_prototypes
@@ -83,6 +83,17 @@ def ask_packet_info(options):
 
     options["desc"] = input("\033[1mNow set a short description of what your lib does.\033[0m\n>> ")
 
+    groups = get_all_groups(libs)
+    if len(groups) == 0:
+        print("\033[1mNo group found, please create your group:\033[0m")
+    else:
+        print(f"\033[1mAvailable groups: {', '.join(groups)}\033[0m")
+        print("  \033[2mEnter a custom name to create a new group.\033[0m")
+    options["group"] = input(" >> ").strip()
+
+    if options["group"] not in groups:
+        print(f"\033[1;32mSuccessfully created \033[1;37m{options['group']}\033[1;32m!\033[0m") # Need more stuff
+
 
 
 def create_prerequisites(options, filepath: str):
@@ -121,8 +132,8 @@ def create_prerequisites(options, filepath: str):
 
 def deploy_packet(args):
 
-    options = {"name": None, "desc": None, "tests": [], "links": {},
-        "header": None, "sources": [] }
+    options = {"name": None, "desc": None, "group": None, "tests": [],
+        "links": {}, "header": None, "sources": [] }
 
     deploy_command = ArgumentArsenal("deploy", options, args=[],
       desc="Deploy a packet in your 3PF libs.", additional=
