@@ -1,0 +1,12 @@
+def error(reason: str, message: str, exit: bool = True)
+def get_flagdisplay(flag) -> str
+def generate_helper(name: str, args, desc: str, additional: str, flags, vaArg)
+class ArgumentArsenal
+    def __init__(self, command: str, options, args = [], helper: str = None, desc: str = None, additional: str = None)
+    def _print_usage(self)
+    def make_flag(self, name: str, required_arguments, function_called, desc: str = "No description.")
+    def get_args(self)
+    def enable_va_arg(self, name: str, function, optional=True)
+    def parse(self, args)
+    def test(args, options) -> bool
+    def sillyArgs(current: str, options) -> bool

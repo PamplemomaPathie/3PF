@@ -1,11 +1,24 @@
 {
+  "ArgumentArsenal": {
+    "desc": "Easily create sets of arguments & parse them automatically.",
+    "links": {},
+    "versions": {
+      "1": {
+        "changelog": "First version.",
+        "content": "def error(reason: str, message: str, exit: bool = True)\ndef get_flagdisplay(flag) -> str\ndef generate_helper(name: str, args, desc: str, additional: str, flags, vaArg)\nclass ArgumentArsenal\n    def __init__(self, command: str, options, args = [], helper: str = None, desc: str = None, additional: str = None)\n    def _print_usage(self)\n    def make_flag(self, name: str, required_arguments, function_called, desc: str = \"No description.\")\n    def get_args(self)\n    def enable_va_arg(self, name: str, function, optional=True)\n    def parse(self, args)\n    def test(args, options) -> bool\n    def sillyArgs(current: str, options) -> bool",
+        "tests": [],
+        "headers": []
+      }
+    },
+    "group": "python"
+  },
   "libc": {
-    "content": "int bst_getnbr(char const *str, char c, int *pos);\nint char_in_str(char ch, char const *str);\nint my_getnbr(char const *str);\nint mini_printf(const char *format, ...);\nint debug_print(char const *format, ...);",
     "desc": "Simple C functions.",
     "links": {},
     "versions": {
       "1": {
-        "changelog": "",
+        "changelog": "First version.",
+        "content": "int bst_getnbr(char const *str, char c, int *pos);\nint char_in_str(char ch, char const *str);\nint my_getnbr(char const *str);\nint mini_printf(const char *format, ...);\nint debug_print(char const *format, ...);",
         "tests": [
           "mini_printf_str",
           "mini_printf_char",
@@ -25,15 +38,16 @@
         ],
         "headers": []
       }
-    }
+    },
+    "group": "C"
   },
   "cstring": {
-    "content": "int my_strlen(char const *str);\nchar *my_strdup(char const *src);\nchar *my_strcpy(char *dest, char const *src);\nint my_strcmp(char const *s1, char const *s2);\nint my_strncmp(char const *s1, char const *s2, int n);",
     "desc": "Manipulate strings in C.",
     "links": {},
     "versions": {
       "1": {
-        "changelog": "",
+        "changelog": "First version.",
+        "content": "int my_strlen(char const *str);\nchar *my_strdup(char const *src);\nchar *my_strcpy(char *dest, char const *src);\nint my_strcmp(char const *s1, char const *s2);\nint my_strncmp(char const *s1, char const *s2, int n);",
         "tests": [
           "my_strlen",
           "my_strlen_error",
@@ -44,34 +58,7 @@
         ],
         "headers": []
       }
-    }
-  },
-  "libc_fake": {
-    "content": "int bst_getnbr(char const *str, char c, int *pos)\nint char_in_str(char ch, char const *str)\nint my_getnbr(char const *str)\nint mini_printf(const char *format, ...)\nint debug_print(char const *format, ...)\n",
-    "desc": null,
-    "links": null,
-    "versions": {
-      "1": {
-        "changelog": "",
-        "tests": [
-          "mini_printf_str",
-          "mini_printf_char",
-          "mini_printf_num",
-          "mini_printf_overflow",
-          "debug_print_test",
-          "my_getnbr",
-          "my_getnbr_error",
-          "char_in_str_true",
-          "char_in_str_false",
-          "bst_getnbr_valid_input",
-          "bst_getnbr_multiple_numbers",
-          "bst_getnbr_no_numbers",
-          "bst_getnbr_null_string",
-          "bst_getnbr_empty_string",
-          "bst_getnbr_negative_number"
-        ],
-        "headers": []
-      }
-    }
+    },
+    "group": "C"
   }
 }
