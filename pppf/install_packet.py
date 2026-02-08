@@ -7,6 +7,9 @@ import sys
 import os
 
 
+def install_lib(name: str, version: str, path: str, lib, tests_dir, header_dir):
+    pass
+
 
 def complete_path(text, state):
     import glob
@@ -34,6 +37,8 @@ def install_lib(name: str, version: str, path: str, lib):
     if headers > 0:
         print(f"\033[1m3PF found \033[33m{headers}\033[0m\033[1m headers in '{name} v{version}'\033[0m.")
         header_dir = input("Directory for headers (empty to ignore) >> ")
+
+    install_lib(name, version, path, lib, test_dir if tests > 0 else None , header_dir if headers > 0 else None)
 
 
 def flag_version(args, options) -> bool:
