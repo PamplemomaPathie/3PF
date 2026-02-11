@@ -1,14 +1,12 @@
 #!/usr/bin/python3
 
 from arsenals.argument_arsenal import ArgumentArsenal
-from const import BASEDIR
+from const import BASEDIR, LIBDIR
 from pppf.pppf_tools import load_libs, lib_not_found
+from tools.file_tools import copy_directory
 import sys
 import os
 
-
-def install_lib(name: str, version: str, path: str, lib, tests_dir, header_dir):
-    pass
 
 
 def complete_path(text, state):
@@ -28,17 +26,25 @@ def install_lib(name: str, version: str, path: str, lib):
     readline.set_completer(complete_path)
     readline.parse_and_bind('tab: complete')
 
+
+    src = LIBDIR + name + "/" + version + "/"
+    dest = path + "/"
+
+    copy_directory(src + "srcs/", dest)
+
     tests = len(lib["versions"][version]["tests"])
     if tests > 0:
         print(f"\033[1m3PF found \033[33m{tests}\033[0m\033[1m tests in '{name} v{version}'\033[0m.")
         test_dir = input("Directory for tests (empty to ignore) >> ")
+        if test_dir.strip() != "":
+            copy_directory(src + "tests/", dest)
 
     headers = len(lib["versions"][version]["headers"])
     if headers > 0:
         print(f"\033[1m3PF found \033[33m{headers}\033[0m\033[1m headers in '{name} v{version}'\033[0m.")
         header_dir = input("Directory for headers (empty to ignore) >> ")
-
-    install_lib(name, version, path, lib, test_dir if tests > 0 else None , header_dir if headers > 0 else None)
+        if header_dir.strip() != "":
+            copy_directory(src + "headers/", dest)
 
 
 def flag_version(args, options) -> bool:
