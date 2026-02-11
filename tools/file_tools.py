@@ -30,3 +30,10 @@ def create_directory(directory_name):
     except Exception as e:
         print(f"Error: {e}")
 
+
+def copy_directory(src: str, dest: str):
+    all_files = os.listdir(src)
+
+    for file in all_files:
+        content = read_file(src + file)
+        write_to_file(dest + file, content)
