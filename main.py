@@ -13,4 +13,8 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        print("\n\033[1;31mStopped.\033[0m")
+        sys.exit(0)
