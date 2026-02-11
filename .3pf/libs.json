@@ -1,4 +1,24 @@
 {
+  "cstring": {
+    "desc": "Manipulate strings in C.",
+    "links": {},
+    "versions": {
+      "1": {
+        "changelog": "First version.",
+        "content": "int my_strlen(char const *str);\nchar *my_strdup(char const *src);\nchar *my_strcpy(char *dest, char const *src);\nint my_strcmp(char const *s1, char const *s2);\nint my_strncmp(char const *s1, char const *s2, int n);",
+        "tests": [
+          "Test(my_strlen, full_covr);",
+          "Test(my_strlen_error, full_covr);",
+          "Test(my_strdup, full_covr, .init = cr_redirect_stdout);",
+          "Test(my_strcpy, full_covr, .init = cr_redirect_stdout);",
+          "Test(my_strcmp, full_covr);",
+          "Test(my_strncmp, full_covr);"
+        ],
+        "headers": []
+      }
+    },
+    "group": "C"
+  },
   "ArgumentArsenal": {
     "desc": "Easily create sets of arguments & parse them automatically.",
     "links": {},
@@ -35,26 +55,6 @@
           "Test(bst_getnbr_null_string, full_covr);",
           "Test(bst_getnbr_empty_string, full_covr);",
           "Test(bst_getnbr_negative_number, full_covr);"
-        ],
-        "headers": []
-      }
-    },
-    "group": "C"
-  },
-  "cstring": {
-    "desc": "Manipulate strings in C.",
-    "links": {},
-    "versions": {
-      "1": {
-        "changelog": "First version.",
-        "content": "int my_strlen(char const *str);\nchar *my_strdup(char const *src);\nchar *my_strcpy(char *dest, char const *src);\nint my_strcmp(char const *s1, char const *s2);\nint my_strncmp(char const *s1, char const *s2, int n);",
-        "tests": [
-          "Test(my_strlen, full_covr);",
-          "Test(my_strlen_error, full_covr);",
-          "Test(my_strdup, full_covr, .init = cr_redirect_stdout);",
-          "Test(my_strcpy, full_covr, .init = cr_redirect_stdout);",
-          "Test(my_strcmp, full_covr);",
-          "Test(my_strncmp, full_covr);"
         ],
         "headers": []
       }

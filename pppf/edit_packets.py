@@ -147,11 +147,23 @@ def edit_changelog(name: str, libs):
     libs[name]['versions'][version]["changelog"] = answer
     print("\033[1;32mChangelog updated\033[0m!")
 
+def edit_group(name: str, libs):
+    print(f"\033[1mCurrent group\033[0m: '{libs[name]['group']}'.")
+    print("\033[1mPlease enter a new group for this lib.\033[0m")
+    answer = input(">> \033[2mgroup\033[0m >> ")
+    if answer == "exit":
+        print("Exited.")
+        return
+    write_to_file(LIBDIR + name + "/group.txt", answer)
+    libs[name]['desc'] = answer
+    print("\033[1;32mGroup updated\033[0m!")
+
 def edit_lib(name: str, libs):
 
     options = {
         "desc": edit_desc,
         "links": edit_links,
+        "group": edit_group,
         "changelog": edit_changelog
     }
 
