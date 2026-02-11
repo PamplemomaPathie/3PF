@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
+from pathlib import Path
+home = str(Path.home())
 
-BASEDIR = "./.3pf/"
-LIBDIR = "./.3pf/libs/"
+BASEDIR = home + "/.3pf/"
+LIBDIR = home + "/.3pf/libs/"
 
 arguments = {
     "install": {
