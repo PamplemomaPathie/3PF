@@ -37,14 +37,14 @@ def install_lib(name: str, version: str, path: str, lib):
         print(f"\033[1m3PF found \033[33m{tests}\033[0m\033[1m tests in '{name} v{version}'\033[0m.")
         test_dir = input("Directory for tests (empty to ignore) >> ")
         if test_dir.strip() != "":
-            copy_directory(src + "tests/", dest)
+            copy_directory(src + "tests/", test_dir)
 
     headers = len(lib["versions"][version]["headers"])
     if headers > 0:
         print(f"\033[1m3PF found \033[33m{headers}\033[0m\033[1m headers in '{name} v{version}'\033[0m.")
         header_dir = input("Directory for headers (empty to ignore) >> ")
         if header_dir.strip() != "":
-            copy_directory(src + "headers/", dest)
+            copy_directory(src + "headers/", header_dir)
 
 
 def flag_version(args, options) -> bool:
